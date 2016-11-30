@@ -7,8 +7,8 @@ const env = 'dev';
 
 var server = http.createServer(app);
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/VirtualPingPong');
+/*var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/VirtualPingPong');*/
 
 
 // routes ======================================================================

@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'boilerplate',
+    selector: 'terrain',
     template: `
-        <terrain></terrain>
+        <h1>Terreno</h1>
+        <div class="terrain"></div>
     `,
     providers:[]
 })
-export class AppComponent {
+export class TerrainComponent {
 
     constructor(){
     }
