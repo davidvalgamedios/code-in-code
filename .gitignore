@@ -1,0 +1,4 @@
+build
+typings
+dist/dev/*
+!dist/systemjs.config.js

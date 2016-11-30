@@ -1,0 +1,9 @@
+{
+  "verbose": false,
+  "watch": [
+    "server.js"
+  ],
+  "events": {
+    "restart": "osascript -e 'display notification \"Reiniciado servidor\"'"
+  }
+}
