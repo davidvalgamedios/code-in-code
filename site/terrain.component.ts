@@ -1,16 +1,21 @@
 import { Component } from '@angular/core';
+import {TerrainService} from "./terrain.service";
+import {Minion} from "./minion";
 
 @Component({
     selector: 'terrain',
     template: `
-        <h1>Terreno</h1>
-        <div class="terrain"></div>
+        <div class="minion" *ngFor="let mn of minionList"
+            [style.top]="mn.getY()"
+            [style.left]="mn.getX()"><div class="eye"></div></div>
     `,
-    providers:[]
+    providers:[TerrainService]
 })
 export class TerrainComponent {
+    minionList:Minion[];
 
-    constructor(){
+    constructor(private terrainService:TerrainService){
+
+        this.minionList = this.terrainService.getMinionList();
     }
-
 }

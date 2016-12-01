@@ -22,7 +22,8 @@ const paths = {
         "build/full-build.js"
     ],
     sass:[
-        './sass/main.scss'
+        './sass/main.scss',
+        './sass/minion-sidebar.scss'
     ],
     devJs:[
         './site/*.ts'

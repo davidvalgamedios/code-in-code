@@ -5,6 +5,7 @@ import { FormsModule }   from '@angular/forms';
 
 import { AppComponent }     from './app.component';
 import {TerrainComponent} from './terrain.component';
+import {MinionsListComponent} from "./minions-list.component";
 
 @NgModule({
     imports: [
@@ -12,7 +13,7 @@ import {TerrainComponent} from './terrain.component';
         FormsModule,
         HttpModule
     ],
-    declarations: [ AppComponent, TerrainComponent],
+    declarations: [ AppComponent, TerrainComponent, MinionsListComponent],
     bootstrap:    [ AppComponent ]
 })
 export class AppModule {}

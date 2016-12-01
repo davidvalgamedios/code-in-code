@@ -1,0 +1,37 @@
+minions-sidebar{
+  position: fixed;
+  width: $sideBarWidth;
+  height: 100vh;
+  right: 0;
+  top: 0;
+  background-color: $greyDarkest;
+  z-index: 10;
+  padding: 25px;
+  box-sizing: border-box;
+
+  .minionAvatar{
+    background-color: #3C3F41;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+
+    .minionContainer{
+      flex: 0;
+      padding-right: 10px;
+    }
+    .indicators{
+      flex: 1;
+
+      .health,.energy {
+        height: 10px;
+      }
+      .health{
+        background-color: #36c50e;
+        margin-bottom: 5px;
+      }
+      .energy{
+        background-color: #11caff;
+      }
+    }
+  }
+}

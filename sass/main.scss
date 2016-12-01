@@ -1,15 +1,70 @@
 $lightGrey: #899198;
-$grey: #3C3F41;
-$greyDark: #313335;
-$greyDarkest: #424242;
+$grey: #424242;
+$greyDark: #3C3F41;
+$greyDarkest: #313335;
+
+
+$sideBarWidth:200px;
 
 body{
   background-color: $grey;
   color: $lightGrey;
+  margin: 0;
+}
+boilerplate{
+  display: block;
+  height: 100%;
+  margin-right: $sideBarWidth;
 }
 
 terrain{
-  height: 500px;
-  width: 500px;
+  display: block;
+  border:1px solid $greyDarkest;
+  margin: 0 auto;
+  position: relative;
+
+  .minion{
+    position: absolute;
+    cursor: pointer;
+  }
+}
+
+.minion{
+  background-color: #fff;
   display: inline-block;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  border: 3px solid #f77341;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+
+  .eye{
+    background-color: black;
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+
+    &.up{
+      top: -5%;
+      left: 25%;
+    }
+    &.dw{
+      top: 50%;
+      left: 25%;
+    }
+    &.lf{
+      top: 25%;
+      left: -5%;
+    }
+    &.rg{
+      top: 25%;
+      left: 50%;
+    }
+  }
 }
