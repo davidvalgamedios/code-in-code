@@ -2,7 +2,7 @@ $lightGrey: #899198;
 $grey: #424242;
 $greyDark: #3C3F41;
 $greyDarkest: #313335;
-
+$almostDark: #272727;
 
 $sideBarWidth:200px;
 
@@ -29,6 +29,14 @@ terrain{
   }
 }
 
+.button{
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: $greyDarkest;
+}
+
 .minion{
   background-color: #fff;
   display: inline-block;
@@ -39,6 +47,8 @@ terrain{
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
+  -webkit-transition: top 0.35s, left 0.35s;
+  transition: top 0.35s, left 0.35s;
 
   .eye{
     background-color: black;

@@ -23,7 +23,8 @@ const paths = {
     ],
     sass:[
         './sass/main.scss',
-        './sass/minion-sidebar.scss'
+        './sass/minion-sidebar.scss',
+        './sass/footer.scss'
     ],
     devJs:[
         './site/*.ts'

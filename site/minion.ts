@@ -9,6 +9,8 @@ export class Minion{
         energy: 100
     };
 
+    private userCode;
+
     constructor(private id:number, private posX:number, private posY:number, private terrain){
 
     }
@@ -29,4 +31,10 @@ export class Minion{
         return this.stats.energy>0?this.stats.energy:0;
     }
 
+    getUserCode():string{
+        return this.userCode;
+    }
+    setUserCode():string{
+        return this.userCode;
+    }
 }

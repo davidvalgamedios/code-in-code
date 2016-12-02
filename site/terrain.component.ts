@@ -6,16 +6,29 @@ import {Minion} from "./minion";
     selector: 'terrain',
     template: `
         <div class="minion" *ngFor="let mn of minionList"
+            (click)="selectMinion(mn)"
             [style.top]="mn.getY()"
-            [style.left]="mn.getX()"><div class="eye"></div></div>
+            [style.left]="mn.getX()"><div class="eye"></div>
+        </div>
+        
+        <code-footer (notify)="closeFooter($event)" [selectedMinion]="selectedMinion"></code-footer>
     `,
     providers:[TerrainService]
 })
 export class TerrainComponent {
     minionList:Minion[];
 
-    constructor(private terrainService:TerrainService){
+    private selectedMinion:Minion;
 
+    constructor(private terrainService:TerrainService){
         this.minionList = this.terrainService.getMinionList();
+    }
+
+    closeFooter(msg:string){
+        this.selectedMinion = null;
+    }
+
+    selectMinion(minion:Minion){
+        this.selectedMinion = minion;
     }
 }

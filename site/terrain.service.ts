@@ -13,8 +13,11 @@ export class TerrainService {
     constructor(private http:Http){
         let randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
         let randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
-
         this.minionList.push(new Minion(1, randX, randY, 4));
+
+        randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
+        randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
+        this.minionList.push(new Minion(2, randX, randY, 4));
         //return TerrainService.instance = TerrainService.instance || this;
     }
 
