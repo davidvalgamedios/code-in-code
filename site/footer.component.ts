@@ -5,17 +5,19 @@ import {Minion} from "./minion";
     selector: 'code-footer',
     template: `
         <div class="footer" [style.bottom]="selectedMinion?'0':'-200px'">
-            <div *ngIf="selectedMinion">
-                <div class="close" (click)="closeFooter()">X</div>
-                
-                <div class="button">Editar código</div>
+            <div class="close" (click)="closeFooter()">X</div>
+            <div *ngIf="selectedMinion">    
+                <div class="button" (click)="editMinionCode()">Editar código</div>
                 {{selectedMinion.getId()}}
             </div>
         </div>
+        
+        <code-editor *ngIf="isEditingCode" [selectedMinion]="selectedMinion" (notify)="closeEditor($event)"></code-editor>
     `,
     providers:[]
 })
 export class FooterComponent {
+    isEditingCode:boolean = false;
     @Input() selectedMinion:Minion;
     @Output() notify: EventEmitter<string> = new EventEmitter<string>();
 
@@ -24,5 +26,13 @@ export class FooterComponent {
 
     closeFooter(){
         this.notify.emit('Close');
+    }
+
+    closeEditor(){
+        this.isEditingCode = false;
+    }
+
+    editMinionCode(){
+        this.isEditingCode = true;
     }
 }
