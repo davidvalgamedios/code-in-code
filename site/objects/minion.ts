@@ -8,6 +8,7 @@ export class Minion{
 
     private stats;
     private customData;
+    private inPause:boolean = false;
 
     private userCode = "";
 
@@ -37,16 +38,20 @@ export class Minion{
     getLookAt(){
         return this.lookAt;
     }
-
     getUserCode():string{
         return this.userCode;
     }
     setUserCode(code:string){
         this.userCode = code;
     }
+    setPause(doPause:boolean){
+        this.inPause = doPause;
+    }
 
     executeCode(){
-        eval(this.userCode);
+        if(!this.inPause){
+            eval(this.userCode);
+        }
     }
 
 

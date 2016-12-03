@@ -23,13 +23,18 @@ export class TerrainComponent {
 
     constructor(private terrainService:TerrainService){
         this.minionList = this.terrainService.getMinionList();
+        setInterval(any=>{
+            this.executeMinionCodes()
+        }, 1000);
     }
 
     closeFooter(msg:string){
+        this.selectedMinion.setPause(false);
         this.selectedMinion = null;
     }
 
     selectMinion(minion:Minion){
+        minion.setPause(true);
         this.selectedMinion = minion;
     }
 
