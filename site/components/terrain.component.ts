@@ -11,7 +11,6 @@ import {Minion} from "../objects/minion";
             [style.left]="mn.getX()">
                 <div class="eye" [ngClass]="mn.getLookAt()"></div>
         </div>
-        <div class="button" (click)="executeMinionCodes()">GO</div>
         
         <code-footer (notify)="closeFooter($event)" [selectedMinion]="selectedMinion"></code-footer>
     `

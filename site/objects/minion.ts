@@ -50,7 +50,13 @@ export class Minion{
 
     executeCode(){
         if(!this.inPause){
-            eval(this.userCode);
+            try {
+                eval(this.userCode);
+            }
+            catch(err){
+                console.info("Errorcito");
+                console.log(err.message);
+            }
         }
     }
 
