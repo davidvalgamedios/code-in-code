@@ -12,7 +12,6 @@ export class TerrainService{
     private minionList:Minion[] = [];
 
     constructor(private http:Http){
-        console.info("HOLA");
         let savedData = localStorage.getItem('cic-minions');
         if(savedData){
             let savedMinions = JSON.parse(savedData);

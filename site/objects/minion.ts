@@ -116,10 +116,9 @@ export class Minion{
 
 
     restoreStateData(preData){
-        console.log(preData);
         this.posX = preData.posX;
         this.posY = preData.posY;
-        //this.stats = preData.stats;
+        this.stats = preData.stats;
         this.userCode = preData.userCode;
     }
 
