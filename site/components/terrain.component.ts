@@ -7,6 +7,7 @@ import {Minion} from "../objects/minion";
     template: `
         <div class="minion" *ngFor="let mn of minionList"
             (click)="selectMinion(mn)"
+            [ngClass]="{'selected':selectedMinion == mn}" 
             [style.top]="mn.getY()"
             [style.left]="mn.getX()">
                 <div class="eye" [ngClass]="mn.getLookAt()"></div>

@@ -25,7 +25,8 @@ const paths = {
         './sass/main.scss',
         './sass/minion-sidebar.scss',
         './sass/footer.scss',
-        './sass/code-editor.scss'
+        './sass/code-editor.scss',
+        './sass/minion.scss'
     ],
     devJs:[
         './site/**/*.ts'
