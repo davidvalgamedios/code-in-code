@@ -8,10 +8,9 @@ import { UUID } from 'angular2-uuid';
 
 @Injectable()
 export class TerrainService{
-    //private static instance: TerrainService;
     private minionList:Minion[] = [];
 
-    constructor(private http:Http){
+    constructor(/*private http:Http*/){
         let savedData = localStorage.getItem('cic-minions');
         if(savedData){
             let savedMinions = JSON.parse(savedData);
@@ -24,8 +23,6 @@ export class TerrainService{
         else{
             this.generateRandomMinions();
         }
-
-        //return TerrainService.instance = TerrainService.instance || this;
     }
 
     getMinionList(){
