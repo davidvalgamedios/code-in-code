@@ -64,19 +64,19 @@ terrain{
     top: 25%;
     left: 25%;
 
-    &.up{
+    &.U{
       top: -5%;
       left: 25%;
     }
-    &.dw{
+    &.D{
       top: 50%;
       left: 25%;
     }
-    &.lf{
+    &.L{
       top: 25%;
       left: -5%;
     }
-    &.rg{
+    &.R{
       top: 25%;
       left: 50%;
     }

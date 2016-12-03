@@ -8,8 +8,10 @@ import {Minion} from "./minion";
         <div class="minion" *ngFor="let mn of minionList"
             (click)="selectMinion(mn)"
             [style.top]="mn.getY()"
-            [style.left]="mn.getX()"><div class="eye"></div>
+            [style.left]="mn.getX()">
+                <div class="eye" [ngClass]="mn.getLookAt()"></div>
         </div>
+        <div class="button" (click)="executeMinionCodes()">GO</div>
         
         <code-footer (notify)="closeFooter($event)" [selectedMinion]="selectedMinion"></code-footer>
     `,
@@ -30,5 +32,11 @@ export class TerrainComponent {
 
     selectMinion(minion:Minion){
         this.selectedMinion = minion;
+    }
+
+    executeMinionCodes(){
+        this.minionList.forEach(mn => {
+            mn.executeCode();
+        });
     }
 }

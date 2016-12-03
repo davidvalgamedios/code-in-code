@@ -5,9 +5,9 @@ import {Minion} from "./minion";
     selector: 'code-footer',
     template: `
         <div class="footer" [style.bottom]="selectedMinion?'0':'-200px'">
-            <div class="close" (click)="closeFooter()">X</div>
+            <div class="close" (click)="closeFooter()"><i class="icon-cancel"></i></div>
             <div *ngIf="selectedMinion">    
-                <div class="button" (click)="editMinionCode()">Editar código</div>
+                <div class="button" (click)="editMinionCode()">Editar código <i class="icon-code"></i></div>
                 {{selectedMinion.getId()}}
             </div>
         </div>

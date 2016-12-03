@@ -14,7 +14,7 @@ import {Minion} from "./minion";
             </div>
             <div class="editorFooter">
                 <div class="button clear" (click)="closeEditor()">Cerrar</div>
-                <div class="button clear" (click)="saveCode()">Guardar</div>
+                <div class="button clear" (click)="saveCode()">Guardar <i class="icon-floppy"></i></div>
             </div>
         </div>
     `,
@@ -38,6 +38,6 @@ export class CodeEditorComponent implements OnInit{
 
     saveCode(){
         this.selectedMinion.setUserCode(this.temporalCode);
-        this.notify.emit('Close');
+        this.closeEditor()
     }
 }
