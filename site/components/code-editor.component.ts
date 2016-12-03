@@ -9,7 +9,15 @@ import {Minion} from "../objects/minion";
                 <textarea spellcheck="false" class="codeEditor"
                     [(ngModel)]="temporalCode"></textarea>
                 <div class="editorHelp">
-                    Leyenda
+                    <h3>Getters</h3>
+                    <p>getEnergy()</p>
+                    <p>getHealth()</p>
+                    
+                    <h3>Acciones</h3>
+                    <p>go(dir) -> [U, D, L, R]</p>
+                    
+                    <h3>Variables</h3>
+                    <p>custom (Object)</p>
                 </div>
             </div>
             <div class="editorFooter">

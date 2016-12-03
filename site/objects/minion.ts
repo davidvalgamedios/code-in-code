@@ -11,6 +11,8 @@ export class Minion{
         energy: 100
     };
 
+    private custom = {};
+
     private userCode = "";
 
     constructor(private id:string, private posX:number, private posY:number, private terrain){
@@ -52,11 +54,12 @@ export class Minion{
 
     private go(dir:string):void{
         //this.lastDir = dir;
-        if(!this.canIGo(dir)){
+        if(this.getEnergy() == 0 || !this.canIGo(dir)){
             this.lookAt = '';
             return;
         }
         this.lookAt = dir;
+        this.stats.energy--;
         switch(dir){
             case 'U':
                 this.posY -= 1;
@@ -120,6 +123,7 @@ export class Minion{
         this.posY = preData.posY;
         this.stats = preData.stats;
         this.userCode = preData.userCode;
+        this.custom = preData.custom;
     }
 
     getStateData(){
@@ -128,7 +132,8 @@ export class Minion{
             posX: this.posX,
             posY: this.posY,
             stats: this.stats,
-            userCode: this.userCode
+            userCode: this.userCode,
+            custom: this.custom
         }
     }
 }
