@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {Minion} from "./minion";
-import {RandomUtils} from "./random-utils";
-import {BoundariesUtils} from "./boundaries-utils";
+import {Minion} from "../objects/minion";
+import {RandomUtils} from "../objects/random-utils";
+import {BoundariesUtils} from "../objects/boundaries-utils";
 
 @Injectable()
 export class TerrainService {

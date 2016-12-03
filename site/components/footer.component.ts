@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {Minion} from "./minion";
+import {Minion} from "../objects/minion";
 
 @Component({
     selector: 'code-footer',

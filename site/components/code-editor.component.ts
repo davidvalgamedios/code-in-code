@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
-import {Minion} from "./minion";
+import {Minion} from "../objects/minion";
 
 @Component({
     selector: 'code-editor',

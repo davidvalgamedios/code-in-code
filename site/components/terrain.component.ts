@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {TerrainService} from "./terrain.service";
-import {Minion} from "./minion";
+import {TerrainService} from "../services/terrain.service";
+import {Minion} from "../objects/minion";
 
 @Component({
     selector: 'terrain',

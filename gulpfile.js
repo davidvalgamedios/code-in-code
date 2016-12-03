@@ -28,7 +28,7 @@ const paths = {
         './sass/code-editor.scss'
     ],
     devJs:[
-        './site/*.ts'
+        './site/**/*.ts'
     ]
 };
 

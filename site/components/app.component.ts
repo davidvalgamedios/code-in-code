@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {BoundariesUtils} from "./boundaries-utils";
+import {BoundariesUtils} from "../objects/boundaries-utils";
 
 @Component({
     selector: 'boilerplate',
