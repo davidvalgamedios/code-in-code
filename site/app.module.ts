@@ -9,6 +9,8 @@ import {MinionsListComponent} from "./components/minions-list.component";
 import {FooterComponent} from "./components/footer.component";
 import {CodeEditorComponent} from "./components/code-editor.component";
 
+import {TerrainService} from "./services/terrain.service";
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -16,6 +18,7 @@ import {CodeEditorComponent} from "./components/code-editor.component";
         HttpModule
     ],
     declarations: [ AppComponent, TerrainComponent, MinionsListComponent, FooterComponent, CodeEditorComponent],
-    bootstrap:    [ AppComponent ]
+    bootstrap:    [ AppComponent ],
+    providers: [TerrainService]
 })
 export class AppModule {}

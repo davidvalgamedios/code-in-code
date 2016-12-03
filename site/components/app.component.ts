@@ -8,8 +8,7 @@ import {BoundariesUtils} from "../objects/boundaries-utils";
         <terrain [style.width]="getWidth()"
                 [style.height]="getHeight()"></terrain>
         <minions-sidebar></minions-sidebar>
-    `,
-    providers:[]
+    `
 })
 export class AppComponent {
 

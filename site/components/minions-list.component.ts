@@ -15,14 +15,18 @@ import {Minion} from "../objects/minion";
                 <div class="energy" [style.width]="mn.getEnergy()+'%'"></div>
             </div>
         </div>
-    `,
-    providers:[TerrainService]
+        
+        <div class="button clear block" (click)="saveGameState()">Guardar <i class="icon-floppy"></i></div>
+    `
 })
 export class MinionsListComponent {
     minionList:Minion[];
 
     constructor(private terrainService:TerrainService){
-        this.minionList = this.terrainService.getMinionList();
+        this.minionList = terrainService.getMinionList();
     }
 
+    saveGameState(){
+        this.terrainService.saveGameState();
+    }
 }

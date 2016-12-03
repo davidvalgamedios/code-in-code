@@ -14,8 +14,7 @@ import {Minion} from "../objects/minion";
         <div class="button" (click)="executeMinionCodes()">GO</div>
         
         <code-footer (notify)="closeFooter($event)" [selectedMinion]="selectedMinion"></code-footer>
-    `,
-    providers:[TerrainService]
+    `
 })
 export class TerrainComponent {
     minionList:Minion[];

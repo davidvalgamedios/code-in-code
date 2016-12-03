@@ -1,4 +1,3 @@
-import {RandomUtils} from './random-utils';
 import {BoundariesUtils} from "./boundaries-utils";
 
 export class Minion{
@@ -14,7 +13,7 @@ export class Minion{
 
     private userCode = "";
 
-    constructor(private id:number, private posX:number, private posY:number, private terrain){
+    constructor(private id:string, private posX:number, private posY:number, private terrain){
 
     }
     //Getters
@@ -24,7 +23,7 @@ export class Minion{
     getY(): number{
         return this.posY*this.minionSize;
     }
-    getId():number{
+    getId():string{
         return this.id;
     }
     getHealth(): number{
@@ -112,6 +111,25 @@ export class Minion{
                 return true;
             default:
                 return false;
+        }
+    }
+
+
+    restoreStateData(preData){
+        console.log(preData);
+        this.posX = preData.posX;
+        this.posY = preData.posY;
+        //this.stats = preData.stats;
+        this.userCode = preData.userCode;
+    }
+
+    getStateData(){
+        return {
+            id: this.id,
+            posX: this.posX,
+            posY: this.posY,
+            stats: this.stats,
+            userCode: this.userCode
         }
     }
 }
