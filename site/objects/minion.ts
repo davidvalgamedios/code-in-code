@@ -11,6 +11,7 @@ export class Minion{
     private inPause:boolean = false;
 
     private userCode = "";
+    private userFunctions;
 
     constructor(private id:string, private posX:number, private posY:number, private terrain){
         this.stats = {
@@ -18,7 +19,12 @@ export class Minion{
             energy: 100
         };
         this.customData = {};
+        this.userFunctions = {
+            getEnergy: this.getEnergy(),
+            getHealth: this.getHealth()
+        };
     }
+
     //Getters
     getX(): number{
         return this.posX*this.minionSize;
@@ -51,17 +57,34 @@ export class Minion{
     executeCode(){
         if(!this.inPause){
             try {
-                eval(this.userCode);
+                let thing = new Function('fn', 'data',  this.userCode);
+                let res =  thing(this.userFunctions, this.customData);
+                this.parseResponse(res);
+                //eval('(function(fn) {'+this.userCode+ '}())');
             }
             catch(err){
                 console.info("Errorcito");
-                console.log(err.message);
+                console.info(err.message);
+            }
+        }
+    }
+    private parseResponse(res){
+        if(res && res.hasOwnProperty('action')){
+            if(res.action == 'go'){
+                this.go(res.arg);
+            }
+            if(res.action == 'rest'){
+                this.rest();
             }
         }
     }
 
 
-
+    private rest(){
+        if(this.stats.energy <100){
+            this.stats.energy++;
+        }
+    }
 
     private go(dir:string):void{
         if(this.getEnergy() == 0 || !this.canIGo(dir)){
@@ -126,7 +149,6 @@ export class Minion{
                 return false;
         }
     }
-
 
     restoreStateData(preData){
         this.posX = preData.posX || 0;
