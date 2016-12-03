@@ -1,30 +1,43 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {Minion} from "./minion";
 
 @Component({
     selector: 'code-editor',
     template: `
         <div class="codeEditorContainer">
-            <textarea spellcheck="false" class="codeEditor"></textarea>
-            <div class="editorHelp">
-                <div class="button" (click)="closeEditor()">Cerrar</div>
+            <div class="editorLayout">
+                <textarea spellcheck="false" class="codeEditor"
+                    [(ngModel)]="temporalCode"></textarea>
+                <div class="editorHelp">
+                    Leyenda
+                </div>
+            </div>
+            <div class="editorFooter">
+                <div class="button clear" (click)="closeEditor()">Cerrar</div>
+                <div class="button clear" (click)="saveCode()">Guardar</div>
             </div>
         </div>
     `,
     providers:[]
 })
-export class CodeEditorComponent {
+export class CodeEditorComponent implements OnInit{
     @Input() selectedMinion:Minion;
     @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+    temporalCode:string;
 
     constructor(){
+    }
+
+    ngOnInit(){
+        this.temporalCode = JSON.parse(JSON.stringify(this.selectedMinion.getUserCode()));
     }
 
     closeEditor(){
         this.notify.emit('Close');
     }
 
-    editMinionCode(){
-
+    saveCode(){
+        this.selectedMinion.setUserCode(this.temporalCode);
+        this.notify.emit('Close');
     }
 }

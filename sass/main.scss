@@ -35,6 +35,10 @@ terrain{
   border-radius: 5px;
   cursor: pointer;
   background-color: $greyDarkest;
+
+  &.clear{
+    background-color: $greyDark;
+  }
 }
 
 .minion{

@@ -11,31 +11,47 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.3);
+  flex-direction: column;
 
-  textarea.codeEditor{
-    max-width: 750px;
-    max-height: 90vh;
+  .editorLayout{
+    max-width: 950px;
+    max-height: 85vh;
+    display: flex;
+    width: 100%;
     height: 100%;
-    flex: 1;
-    background-color: $grey;
-    color: white;
-    padding: 15px;
-    font-size: 15px;
-    resize: none;
 
-    &:focus{
-      outline: none;
+    textarea.codeEditor{
+      flex: 1;
+      background-color: $grey;
+      color: white;
+      padding: 15px;
+      font-size: 15px;
+      resize: none;
+      border-color: $greyDarkest;
+
+      &:focus{
+        outline: none;
+      }
+    }
+
+    .editorHelp{
+      padding: 15px;
+      box-sizing: border-box;
+      min-width: 250px;
+      flex: 0;
+      background-color: $greyDarkest;
     }
   }
 
-  .editorHelp{
-    max-height: 90vh;
-    padding: 15px;
-    box-sizing: border-box;
-    min-width: 250px;
+  .editorFooter{
     flex: 0;
-    height: 100%;
+    width: 100%;
+    max-width: 950px;
+    padding: 10px;
     background-color: $greyDarkest;
-    display: inline-block;
+    box-sizing: border-box;
   }
+
+
+
 }
