@@ -23,13 +23,12 @@ import {Minion} from "../objects/minion";
                     <div *ngIf="selectedTab=='help'" class="tabSection">
                         <h3>Getters</h3>
                         <p>getEnergy()<br>
-                        <p>getHealth()</p>
-                        
+                            getHealth()</p>
                         <h3>Acciones</h3>
                         <p>go(dir) -> [U, D, L, R]</p>
                     </div>
                     <div *ngIf="selectedTab=='vars'" class="tabSection">
-                    
+                        {{temporalCode}}
                     </div>
                 </div>
             </div>
@@ -59,6 +58,7 @@ export class CodeEditorComponent implements OnInit{
     }
 
     saveCode(){
+        console.log(this.temporalCode);
         this.selectedMinion.setUserCode(this.temporalCode);
         this.closeEditor()
     }
