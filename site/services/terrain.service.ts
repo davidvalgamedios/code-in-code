@@ -48,7 +48,6 @@ export class TerrainService{
         localStorage.setItem('cic-minions', JSON.stringify(aMinionData));
     }
 
-
     generateRandomMinions(){
         let uuid = UUID.UUID();
         let randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);

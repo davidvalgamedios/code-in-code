@@ -6,17 +6,17 @@ export class Minion{
     private terrainWidth:number = BoundariesUtils.getTerrainWidth();
     private lookAt:string = '';
 
-    private stats = {
-        health: 100,
-        energy: 100
-    };
-
-    private custom = {};
+    private stats;
+    private customData;
 
     private userCode = "";
 
     constructor(private id:string, private posX:number, private posY:number, private terrain){
-
+        this.stats = {
+            health: 100,
+            energy: 100
+        };
+        this.customData = {};
     }
     //Getters
     getX(): number{
@@ -53,7 +53,6 @@ export class Minion{
 
 
     private go(dir:string):void{
-        //this.lastDir = dir;
         if(this.getEnergy() == 0 || !this.canIGo(dir)){
             this.lookAt = '';
             return;
@@ -119,11 +118,14 @@ export class Minion{
 
 
     restoreStateData(preData){
-        this.posX = preData.posX;
-        this.posY = preData.posY;
-        this.stats = preData.stats;
-        this.userCode = preData.userCode;
-        this.custom = preData.custom;
+        this.posX = preData.posX || 0;
+        this.posY = preData.posY || 0;
+        this.stats = preData.stats || {
+                health: 100,
+                energy: 100
+            };
+        this.userCode = preData.userCode || "";
+        this.customData = preData.customData || {};
     }
 
     getStateData(){
@@ -133,7 +135,7 @@ export class Minion{
             posY: this.posY,
             stats: this.stats,
             userCode: this.userCode,
-            custom: this.custom
+            customData: this.customData
         }
     }
 }

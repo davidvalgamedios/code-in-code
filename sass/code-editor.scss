@@ -35,11 +35,36 @@
     }
 
     .editorHelp{
-      padding: 15px;
       box-sizing: border-box;
       min-width: 250px;
       flex: 0;
       background-color: $greyDarkest;
+
+      .tabSelector{
+        display: flex;
+        background-color: $greyDark;
+
+        #varsTab,#helpTab{
+          padding: 15px;
+          font-size: 20px;
+          cursor: pointer;
+
+          &.active{
+            background-color: $greyDarkest;
+          }
+
+        }
+        #varsTab{
+          flex:1;
+        }
+        #helpTab{
+          flex:0;
+        }
+      }
+
+      .tabSection{
+        padding: 15px;
+      }
     }
   }
 

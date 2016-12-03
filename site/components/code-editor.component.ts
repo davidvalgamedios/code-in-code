@@ -7,17 +7,30 @@ import {Minion} from "../objects/minion";
         <div class="codeEditorContainer">
             <div class="editorLayout">
                 <textarea spellcheck="false" class="codeEditor"
+                    onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
                     [(ngModel)]="temporalCode"></textarea>
                 <div class="editorHelp">
-                    <h3>Getters</h3>
-                    <p>getEnergy()</p>
-                    <p>getHealth()</p>
+                    <div class="tabSelector">
+                        <div id="varsTab" (click)="selectedTab='vars'"
+                            [ngClass]="{'active':selectedTab=='vars'}">
+                            VARS
+                        </div>
+                        <div id="helpTab" (click)="selectedTab='help'"
+                            [ngClass]="{'active':selectedTab=='help'}">
+                            <i class="icon-help"></i>
+                        </div>
+                    </div>
+                    <div *ngIf="selectedTab=='help'" class="tabSection">
+                        <h3>Getters</h3>
+                        <p>getEnergy()<br>
+                        <p>getHealth()</p>
+                        
+                        <h3>Acciones</h3>
+                        <p>go(dir) -> [U, D, L, R]</p>
+                    </div>
+                    <div *ngIf="selectedTab=='vars'" class="tabSection">
                     
-                    <h3>Acciones</h3>
-                    <p>go(dir) -> [U, D, L, R]</p>
-                    
-                    <h3>Variables</h3>
-                    <p>custom (Object)</p>
+                    </div>
                 </div>
             </div>
             <div class="editorFooter">
@@ -32,6 +45,7 @@ export class CodeEditorComponent implements OnInit{
     @Input() selectedMinion:Minion;
     @Output() notify: EventEmitter<string> = new EventEmitter<string>();
     temporalCode:string;
+    selectedTab:string = 'vars';
 
     constructor(){
     }
