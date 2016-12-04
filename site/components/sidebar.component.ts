@@ -22,7 +22,7 @@ import {ResourcesStorage} from "../objects/resource-storage";
             <div class="minionContainer">
                 <div class="storage"><i class="icon icon-box"></i></div>
             </div>
-            <div class="indicators">
+            <div class="indicators text">
                 <div class="ind bold">Acumulado</div>
                 <div class="ind">{{st.getStored()}}</div>
             </div>
