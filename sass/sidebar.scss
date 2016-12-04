@@ -25,12 +25,22 @@ sidebar{
     .indicators{
       flex: 1;
 
-      .health,.energy {
+      .ind {
         height: 10px;
+        margin-bottom: 5px;
+        font-size: 13px;
+
+        &.bold{
+          font-weight: bold;
+        }
+
+        &:last-of-type{
+          margin-bottom: 0;
+        }
       }
+
       .health{
         background-color: #36c50e;
-        margin-bottom: 5px;
       }
       .energy{
         background-color: #11caff;
