@@ -12,7 +12,7 @@ import {ResourcesSource} from "../objects/resource-source";
             [ngClass]="[selectedMinion == mn?'selected':'', mn.digDir]" 
             [style.top]="mn.getYpx()"
             [style.left]="mn.getXpx()">
-                <div class="eye" [ngClass]="mn.lookAt"></div>
+                <div class="eye" [ngClass]="[mn.lookAt, mn.resting?'rest':'']"></div>
         </div>
         
         <div class="storage" *ngFor="let st of storageList" 

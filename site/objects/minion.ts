@@ -16,7 +16,8 @@ export class Minion{
     private userFunctions;
 
     lookAt:string = '';
-    digDir: string= "";
+    digDir: string = "";
+    resting:boolean = false;
 
     constructor(private id:string, private posX:number, private posY:number, private terrainDist){
         this.stats = {
@@ -92,7 +93,7 @@ export class Minion{
             dig: this.dig,
             store: this.store
         };
-
+        this.resting = false;
         this.digDir = '';
         if(!this.inPause){
             this.lookAt = '';
@@ -109,7 +110,6 @@ export class Minion{
     }
     private parseResponse(res){
         if(res && res.hasOwnProperty('action')){
-            console.info(res.action);
             if(res.action == 'go'){
                 this.go(res.arg);
             }
@@ -130,6 +130,7 @@ export class Minion{
     //POSSIBLE EVENTS
     private rest(){
         if(this.stats.energy < 100){
+            this.resting = true;
             this.stats.energy += 5;
             if(this.stats.energy > 100){
                 this.stats.energy = 100;
@@ -141,24 +142,30 @@ export class Minion{
             this.lookAt = '';
             return;
         }
+        let old = {
+            x:this.posX,
+            y:this.posY,
+        };
         this.lookAt = dir;
         this.stats.energy-= 1;
         switch(dir){
             case 'U':
                 this.posY -= 1;
-                return;
+                break;
             case 'D':
                 this.posY += 1;
-                return;
+                break;
             case 'R':
                 this.posX += 1;
-                return;
+                break;
             case 'L':
                 this.posX -= 1;
-                return;
+                break;
             default:
                 return;
         }
+        this.terrainDist[old.x][old.y] = null;
+        this.terrainDist[this.posX][this.posY] = this;
     }
     private dig(dir:string):void{
         if(this.isValidPosition(dir)){
@@ -177,9 +184,6 @@ export class Minion{
                 }
             }
         }
-        else{
-            console.log('Invalid position: '+dir);
-        }
     }
     private store(dir:string):void{
         if(this.isValidPosition(dir)){
@@ -194,9 +198,6 @@ export class Minion{
                 this.digDir = 'dig'+dir;
                 this.stats.load = 0;
             }
-        }
-        else{
-            console.log('Invalid position: '+dir);
         }
     }
 

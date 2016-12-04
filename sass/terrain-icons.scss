@@ -34,7 +34,7 @@
   overflow: hidden;
   position: absolute;
   cursor:pointer;
-  transition: top 0.35s, left 0.35s;
+  transition: top 1s, left 1s;
 
   &.selected{
     box-shadow: 0 0 16px 5px rgb(255, 159, 40);
@@ -85,6 +85,12 @@
     &.R{
       top: 25%;
       left: 50%;
+    }
+
+    &.rest{
+      top: 50% !important;
+      left: 25% !important;
+      height: 2px;
     }
   }
 }
