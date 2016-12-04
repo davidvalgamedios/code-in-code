@@ -9,14 +9,14 @@ import {ResourcesStorage} from "../objects/resource-storage";
         <div class="minion" *ngFor="let mn of minionList"
             (click)="selectMinion(mn)"
             [ngClass]="{'selected':selectedMinion == mn}" 
-            [style.top]="mn.getY()"
-            [style.left]="mn.getX()">
+            [style.top]="mn.getYpx()"
+            [style.left]="mn.getXpx()">
                 <div class="eye" [ngClass]="mn.getLookAt()"></div>
         </div>
         
         <div class="storage" *ngFor="let st of storageList" 
-            [style.top]="st.getY()"
-            [style.left]="st.getX()">
+            [style.top]="st.getYpx()"
+            [style.left]="st.getXpx()">
                 <i class="icon icon-box"></i>
         </div>
         
@@ -24,11 +24,14 @@ import {ResourcesStorage} from "../objects/resource-storage";
     `
 })
 export class TerrainComponent {
+    private terrainDist;
+
     private minionList:Minion[];
     private storageList:ResourcesStorage[];
     private selectedMinion:Minion;
 
     constructor(private terrainService:TerrainService){
+        this.terrainDist = this.terrainService.getTerrainDist();
         this.minionList = this.terrainService.getMinionList();
         this.storageList = this.terrainService.getStorageList();
 

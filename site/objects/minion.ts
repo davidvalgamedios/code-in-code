@@ -27,9 +27,15 @@ export class Minion{
 
     //Getters
     getX(): number{
-        return this.posX*this.minionSize;
+        return this.posX;
     }
     getY(): number{
+        return this.posY;
+    }
+    getXpx(): number{
+        return this.posX*this.minionSize;
+    }
+    getYpx(): number{
         return this.posY*this.minionSize;
     }
     getId():string{
@@ -150,16 +156,6 @@ export class Minion{
         }
     }
 
-    restoreStateData(preData){
-        this.posX = preData.posX || 0;
-        this.posY = preData.posY || 0;
-        this.stats = preData.stats || {
-                health: 100,
-                energy: 100
-            };
-        this.userCode = preData.userCode || "";
-        this.customData = preData.customData || {};
-    }
 
     getStateData(){
         return {
@@ -170,5 +166,15 @@ export class Minion{
             userCode: this.userCode,
             customData: this.customData
         }
+    }
+    restoreStateData(preData) {
+        this.posX = preData.posX || 0;
+        this.posY = preData.posY || 0;
+        this.stats = preData.stats || {
+                health: 100,
+                energy: 100
+            };
+        this.userCode = preData.userCode || "";
+        this.customData = preData.customData || {};
     }
 }

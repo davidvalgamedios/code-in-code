@@ -12,9 +12,15 @@ export class ResourcesStorage{
     }
     //Getters
     getX(): number{
-        return this.posX*this.minionSize;
+        return this.posX;
     }
     getY(): number{
+        return this.posY;
+    }
+    getXpx(): number{
+        return this.posX*this.minionSize;
+    }
+    getYpx(): number{
         return this.posY*this.minionSize;
     }
 
@@ -25,9 +31,18 @@ export class ResourcesStorage{
         this.stats.stored += value;
     }
 
-
-
-    restoreStateData(data){
-
+    getStateData(){
+        return {
+            posX: this.posX,
+            posY: this.posY,
+            stats: this.stats
+        }
+    }
+    restoreStateData(preData){
+        this.posX = preData.posX || 0;
+        this.posY = preData.posY || 0;
+        this.stats = preData.stats || {
+                stored: 0
+            };
     }
 }

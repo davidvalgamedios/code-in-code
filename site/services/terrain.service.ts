@@ -9,10 +9,12 @@ import {ResourcesStorage} from "../objects/resource-storage";
 
 @Injectable()
 export class TerrainService{
+    private terrainDist = [];
     private minionList:Minion[] = [];
     private storageList:ResourcesStorage[] = [];
 
     constructor(/*private http:Http*/){
+        this.initTerrainDist();
         let savedData = localStorage.getItem('cic-minions');
         if(savedData){
             let savedMinions = JSON.parse(savedData);
@@ -20,6 +22,7 @@ export class TerrainService{
                 let minion = new Minion(mn.id, 0, 0, 0);
                 minion.restoreStateData(mn);
                 this.minionList.push(minion);
+                this.terrainDist[minion.getX()][minion.getY()] = minion;
             });
         }
         else{
@@ -32,7 +35,8 @@ export class TerrainService{
             savedStorage.forEach(st => {
                 let storage = new ResourcesStorage(0, 0);
                 storage.restoreStateData(st);
-                this.storageList.push(storage)
+                this.storageList.push(storage);
+                this.terrainDist[storage.getX()][storage.getY()] = storage;
             })
         }
         else{
@@ -45,6 +49,9 @@ export class TerrainService{
     }
     getStorageList(){
         return this.storageList;
+    }
+    getTerrainDist(){
+        return this.terrainDist;
     }
 
     /*createRoom(){
@@ -64,21 +71,37 @@ export class TerrainService{
            aMinionData.push(oMinion.getStateData())
         });
         localStorage.setItem('cic-minions', JSON.stringify(aMinionData));
+
+        let aStorageData = [];
+        this.storageList.forEach(oStr => {
+            aStorageData.push(oStr.getStateData())
+        });
+        localStorage.setItem('cic-storage', JSON.stringify(aStorageData));
     }
 
+    initTerrainDist(){
+        for(let x=0;x<BoundariesUtils.getTerrainWidth();x++){
+            this.terrainDist.push(new Array(BoundariesUtils.getTerrainHeight()));
+        }
+    }
     generateRandomMinions(){
         let uuid = UUID.UUID();
         let randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
         let randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
-        this.minionList.push(new Minion(uuid, randX, randY, 4));
+        let newMinion = new Minion(uuid, randX, randY, 4);
+        this.minionList.push(newMinion);
+        this.terrainDist[randX][randY] = newMinion;
 
         uuid = UUID.UUID();
         randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
         randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
-        this.minionList.push(new Minion(uuid, randX, randY, 4));
+        newMinion = new Minion(uuid, randX, randY, 4);
+        this.minionList.push(newMinion);
+        this.terrainDist[randX][randY] = newMinion;
     }
-
     generateResourceStorage(){
-        this.storageList.push(new ResourcesStorage(2, 15));
+        let resource = new ResourcesStorage(2, 15);
+        this.storageList.push(resource);
+        this.terrainDist[2][15] = resource;
     }
 }
