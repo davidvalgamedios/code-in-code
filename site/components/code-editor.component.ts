@@ -21,13 +21,22 @@ import {Minion} from "../objects/minion";
                         </div>
                     </div>
                     <div *ngIf="selectedTab=='help'" class="tabSection">
+                        <h3>Data</h3>
+                        <p>data.any</p>
                         <h3>Getters</h3>
-                        <p>fn.getEnergy()<br>
-                            fn.getHealth()</p>
+                        <p>
+                            fn.getEnergy()<br>
+                            fn.getHealth()<br>
+                            fn.getLoad()<br>
+                            fn.getTerrain(x, y)
+                        </p>
                         <h3>Acciones</h3>
                         <p>Formato: (action: %, arg: %)</p>
-                        <p>go,  -> [U, D, L, R]<br>
-                            rest
+                        <p>
+                            go(dir) [U, D, L, R]<br>
+                            rest()<br>
+                            dig(dir)<br>
+                            store(dir)
                         </p>
                     </div>
                     <div *ngIf="selectedTab=='vars'" class="tabSection">

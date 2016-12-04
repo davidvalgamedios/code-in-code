@@ -21,6 +21,10 @@ sidebar{
     .minionContainer{
       flex: 0;
       padding-right: 10px;
+
+      .minion, .storage{
+        position: relative;
+      }
     }
     .indicators{
       flex: 1;

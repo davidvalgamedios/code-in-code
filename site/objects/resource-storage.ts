@@ -41,8 +41,6 @@ export class ResourcesStorage{
     restoreStateData(preData){
         this.posX = preData.posX || 0;
         this.posY = preData.posY || 0;
-        this.stats = preData.stats || {
-                stored: 0
-            };
+        this.stats.stored = preData.stats.stored || 0;
     }
 }

@@ -1,20 +1,56 @@
 @import './boundaries.scss';
 
+@keyframes digR {
+  0%   {transform: translateX(0)}
+  5%  {transform: translateX(5px)}
+  15%  {transform: translateX(0)}
+  100% {transform: translateX(0)}
+}
+@keyframes digL {
+  0%   {transform: translateX(0)}
+  5%  {transform: translateX(-5px)}
+  15%  {transform: translateX(0)}
+  100% {transform: translateX(0)}
+}
+@keyframes digU {
+  0%   {transform: translateY(0)}
+  5%  {transform: translateY(-5px)}
+  15%  {transform: translateX(0)}
+  100% {transform: translateY(0)}
+}
+@keyframes digD {
+  0%   {transform: translateY(0)}
+  5%  {transform: translateY(5px)}
+  15%  {transform: translateX(0)}
+  100% {transform: translateY(0)}
+}
+
+
 .minion, .storage, .resource{
   height: $minionSize;
   width: $minionSize;
   border-radius: 50%;
   box-sizing: border-box;
   overflow: hidden;
-  position: relative;
+  position: absolute;
   cursor:pointer;
-  -webkit-transition: top 0.35s, left 0.35s;
   transition: top 0.35s, left 0.35s;
 
   &.selected{
-    -webkit-box-shadow: 0 0 28px 5px rgb(255, 159, 40);
-    -moz-box-shadow: 0 0 28px 5px rgb(255, 159, 40);
     box-shadow: 0 0 16px 5px rgb(255, 159, 40);
+  }
+
+  &.digR{
+    animation: digR 1s infinite;
+  }
+  &.digL{
+    animation: digL 1s infinite;
+  }
+  &.digU{
+    animation: digU 1s infinite;
+  }
+  &.digD{
+    animation: digD 1s infinite;
   }
 }
 
@@ -23,10 +59,6 @@
   background-color: #fff;
   display: inline-block;
   border: 3px solid #f77341;
-  -webkit-transition: top 0.35s, left 0.35s;
-  transition: top 0.35s, left 0.35s;
-
-
 
   .eye{
     background-color: black;

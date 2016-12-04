@@ -9,10 +9,10 @@ import {ResourcesSource} from "../objects/resource-source";
     template: `
         <div class="minion" *ngFor="let mn of minionList"
             (click)="selectMinion(mn)"
-            [ngClass]="{'selected':selectedMinion == mn}" 
+            [ngClass]="[selectedMinion == mn?'selected':'', mn.digDir]" 
             [style.top]="mn.getYpx()"
             [style.left]="mn.getXpx()">
-                <div class="eye" [ngClass]="mn.getLookAt()"></div>
+                <div class="eye" [ngClass]="mn.lookAt"></div>
         </div>
         
         <div class="storage" *ngFor="let st of storageList" 

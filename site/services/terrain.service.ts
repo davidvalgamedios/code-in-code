@@ -21,7 +21,7 @@ export class TerrainService{
         if(savedData){
             let savedMinions = JSON.parse(savedData);
             savedMinions.forEach(mn => {
-                let minion = new Minion(mn.id, 0, 0, 0);
+                let minion = new Minion(mn.id, 0, 0, this.terrainDist);
                 minion.restoreStateData(mn);
                 this.minionList.push(minion);
                 this.terrainDist[minion.getX()][minion.getY()] = minion;
@@ -49,12 +49,12 @@ export class TerrainService{
 
         savedData = localStorage.getItem('cic-resource');
         if(savedData){
-            let savedStorage = JSON.parse(savedData);
-            savedStorage.forEach(st => {
-                let source = new ResourcesSource(0, 0);
-                source.restoreStateData(st);
-                this.resourceList.push(source);
-                this.terrainDist[source.getX()][source.getY()] = source;
+            let savedResources = JSON.parse(savedData);
+            savedResources.forEach(st => {
+                let resource = new ResourcesSource(0, 0);
+                resource.restoreStateData(st);
+                this.resourceList.push(resource);
+                this.terrainDist[resource.getX()][resource.getY()] = resource;
             })
         }
         else{
@@ -116,14 +116,14 @@ export class TerrainService{
         let uuid = UUID.UUID();
         let randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
         let randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
-        let newMinion = new Minion(uuid, randX, randY, 4);
+        let newMinion = new Minion(uuid, randX, randY, this.terrainDist);
         this.minionList.push(newMinion);
         this.terrainDist[randX][randY] = newMinion;
 
         uuid = UUID.UUID();
         randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
         randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
-        newMinion = new Minion(uuid, randX, randY, 4);
+        newMinion = new Minion(uuid, randX, randY, this.terrainDist);
         this.minionList.push(newMinion);
         this.terrainDist[randX][randY] = newMinion;
     }

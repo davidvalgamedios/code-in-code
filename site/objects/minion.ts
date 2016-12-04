@@ -1,27 +1,38 @@
 import {BoundariesUtils} from "./boundaries-utils";
+import {ResourcesSource} from "./resource-source";
+import {ResourcesStorage} from "./resource-storage";
 
 export class Minion{
     private minionSize:number = BoundariesUtils.getMinionSize();
     private terrainHeight:number = BoundariesUtils.getTerrainHeight();
     private terrainWidth:number = BoundariesUtils.getTerrainWidth();
-    private lookAt:string = '';
 
     private stats;
+    private maximumLoad = 10;
     private customData;
     private inPause:boolean = false;
 
     private userCode = "";
     private userFunctions;
 
-    constructor(private id:string, private posX:number, private posY:number, private terrain){
+    lookAt:string = '';
+    digDir: string= "";
+
+    constructor(private id:string, private posX:number, private posY:number, private terrainDist){
         this.stats = {
             health: 100,
-            energy: 100
+            energy: 100,
+            load: 0,
+            strength: 0
         };
         this.customData = {};
         this.userFunctions = {
-            getEnergy: this.getEnergy(),
-            getHealth: this.getHealth()
+            getEnergy: this.getEnergy,
+            getHealth: this.getHealth,
+            getLoad: this.getLoad,
+            getTerrain: this.getTerrain,
+            dig: this.dig,
+            store: this.store
         };
     }
 
@@ -47,8 +58,25 @@ export class Minion{
     getEnergy():number{
         return this.stats.energy>0?this.stats.energy:0;
     }
-    getLookAt(){
-        return this.lookAt;
+    getLoad():number{
+        return this.stats.load;
+    }
+    getTerrain(x,y):any{
+        let object = this.terrainDist[x][y];
+        if(object){
+            let name = object.constructor.name;
+            switch (name){
+                case 'ResourcesStorage':
+                    return 'storage';
+                case 'ResourcesSource':
+                    return 'source';
+                case 'Minion':
+                    return 'minion';
+                default:
+                    return null;
+            }
+        }
+        return null;
     }
     getUserCode():string{
         return this.userCode;
@@ -60,13 +88,16 @@ export class Minion{
         this.inPause = doPause;
     }
 
+
+    //CODE EXECUTION
     executeCode(){
+        this.digDir = '';
         if(!this.inPause){
+            this.lookAt = '';
             try {
-                let thing = new Function('fn', 'data',  this.userCode);
-                let res =  thing(this.userFunctions, this.customData);
+                let usrFun = new Function('fn', 'data',  this.userCode);
+                let res =  usrFun(this.userFunctions, this.customData);
                 this.parseResponse(res);
-                //eval('(function(fn) {'+this.userCode+ '}())');
             }
             catch(err){
                 console.info("Errorcito");
@@ -79,19 +110,23 @@ export class Minion{
             if(res.action == 'go'){
                 this.go(res.arg);
             }
-            if(res.action == 'rest'){
+            else if(res.action == 'rest'){
                 this.rest();
+            }
+            else if(res.action == 'dig'){
+                this.dig(res.arg);
             }
         }
     }
 
 
+
+    //POSSIBLE EVENTS
     private rest(){
         if(this.stats.energy <100){
             this.stats.energy++;
         }
     }
-
     private go(dir:string):void{
         if(this.getEnergy() == 0 || !this.canIGo(dir)){
             this.lookAt = '';
@@ -116,47 +151,76 @@ export class Minion{
                 return;
         }
     }
+    private dig(dir:string):void{
+        if(this.isValidPosition(dir)){
+            let oResource:ResourcesSource = this.terrainDist
+                [
+            this.posX+(dir=='R'?1:(dir=='L'?-1:0))
+                ][
+            this.posY+(dir=='D'?1:(dir=='U'?-1:0))
+                ];
+            if(oResource && oResource.constructor.name == 'ResourcesSource'){
+                console.log('FOUND');
+                if(this.stats.load < this.maximumLoad && oResource.getRemaining() > 0){
+                    this.lookAt = dir;
+                    this.digDir = 'dig'+dir;
+                    oResource.dig(this.stats.strength);
+                    this.stats.load += this.stats.strength;
+                }
+            }
+        }
+        else{
+            console.log('Invalid position: '+dir);
+        }
+    }
+    private store(dir:string):void{
+        if(this.isValidPosition(dir)){
+            let oStorage:ResourcesStorage = this.terrainDist
+                [
+            this.posX+(dir=='R'?1:(dir=='L'?-1:0))
+                ][
+            this.posY+(dir=='D'?1:(dir=='U'?-1:0))
+                ];
+            if(oStorage && oStorage.constructor.name == 'ResourcesStorage'){
+                console.log();
+            }
+        }
+        else{
+            console.log('Invalid position: '+dir);
+        }
+    }
 
+
+    //HELPERS
     private canIGo(dir):boolean{
-        //let mn;
-        switch(dir){
+        if(!this.isValidPosition(dir)){
+            return false;
+        }
+        let oCell = this.terrainDist
+            [
+        this.posX+(dir=='R'?1:(dir=='L'?-1:0))
+            ][
+        this.posY+(dir=='D'?1:(dir=='U'?-1:0))
+            ];
+        return !oCell;
+    }
+    private isValidPosition(dir):boolean{
+        switch (dir){
             case 'U':
-                if(this.posY == 0){
-                    return false;
-                }
-                return true;
-                //mn = this.terrain[this.posX][this.posY-1];
-                //return mn == null || (mn.constructor.name == 'Minion' && mn.isDead());
-
+                return this.posY != 0;
             case 'D':
-                if(this.posY == this.terrainHeight-1){
-                    return false;
-                }
-                return true;
-                //mn = this.terrain[this.posX][this.posY+1];
-                //return mn == null || (mn.constructor.name == 'Minion' && mn.isDead());
+                return this.posY != this.terrainHeight-1;
             case 'L':
-                if(this.posX == 0){
-                    return false;
-                }
-                return true;
-                //mn = this.terrain[this.posX-1][this.posY];
-                //return mn == null || (mn.constructor.name == 'Minion' && mn.isDead());
+                return this.posX != 0;
             case 'R':
-                if(this.posX == this.terrainWidth-1){
-                    return false;
-                }
-                return true;
-                //mn = this.terrain[this.posX+1][this.posY];
-                //return mn == null || (mn.constructor.name == 'Minion' && mn.isDead());
-            case 'I':
-                return true;
+                return this.posX != this.terrainWidth-1;
             default:
                 return false;
         }
     }
 
 
+    //SAVING UTILITIES
     getStateData(){
         return {
             id: this.id,
@@ -170,10 +234,10 @@ export class Minion{
     restoreStateData(preData) {
         this.posX = preData.posX || 0;
         this.posY = preData.posY || 0;
-        this.stats = preData.stats || {
-                health: 100,
-                energy: 100
-            };
+        this.stats.health = preData.stats.load || 100;
+        this.stats.energy = preData.stats.energy || 100;
+        this.stats.load = preData.stats.load || 0;
+        this.stats.strength = preData.stats.strength || 1;
         this.userCode = preData.userCode || "";
         this.customData = preData.customData || {};
     }
