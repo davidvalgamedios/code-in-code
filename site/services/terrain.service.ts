@@ -6,12 +6,14 @@ import {RandomUtils} from "../objects/random-utils";
 import {BoundariesUtils} from "../objects/boundaries-utils";
 import { UUID } from 'angular2-uuid';
 import {ResourcesStorage} from "../objects/resource-storage";
+import {ResourcesSource} from "../objects/resource-source";
 
 @Injectable()
 export class TerrainService{
     private terrainDist = [];
     private minionList:Minion[] = [];
     private storageList:ResourcesStorage[] = [];
+    private resourceList:ResourcesSource[] = [];
 
     constructor(/*private http:Http*/){
         this.initTerrainDist();
@@ -29,6 +31,8 @@ export class TerrainService{
             this.generateRandomMinions();
         }
 
+
+
         savedData = localStorage.getItem('cic-storage');
         if(savedData){
             let savedStorage = JSON.parse(savedData);
@@ -42,6 +46,20 @@ export class TerrainService{
         else{
             this.generateResourceStorage();
         }
+
+        savedData = localStorage.getItem('cic-resource');
+        if(savedData){
+            let savedStorage = JSON.parse(savedData);
+            savedStorage.forEach(st => {
+                let source = new ResourcesSource(0, 0);
+                source.restoreStateData(st);
+                this.resourceList.push(source);
+                this.terrainDist[source.getX()][source.getY()] = source;
+            })
+        }
+        else{
+            this.generateResourceSource();
+        }
     }
 
     getMinionList(){
@@ -49,6 +67,9 @@ export class TerrainService{
     }
     getStorageList(){
         return this.storageList;
+    }
+    getResourceList(){
+        return this.resourceList;
     }
     getTerrainDist(){
         return this.terrainDist;
@@ -77,6 +98,12 @@ export class TerrainService{
             aStorageData.push(oStr.getStateData())
         });
         localStorage.setItem('cic-storage', JSON.stringify(aStorageData));
+
+        let aResourcesData = [];
+        this.resourceList.forEach(oRsc => {
+            aResourcesData.push(oRsc.getStateData())
+        });
+        localStorage.setItem('cic-resource', JSON.stringify(aResourcesData));
     }
 
     initTerrainDist(){
@@ -85,6 +112,7 @@ export class TerrainService{
         }
     }
     generateRandomMinions(){
+        console.info("GENERA MINIONS");
         let uuid = UUID.UUID();
         let randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
         let randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
@@ -100,8 +128,15 @@ export class TerrainService{
         this.terrainDist[randX][randY] = newMinion;
     }
     generateResourceStorage(){
+        console.info("GENERA STORAGE");
         let resource = new ResourcesStorage(2, 15);
         this.storageList.push(resource);
         this.terrainDist[2][15] = resource;
+    }
+    generateResourceSource(){
+        console.info("GENERA RESOURCES");
+        let source = new ResourcesSource(15, 2);
+        this.resourceList.push(source);
+        this.terrainDist[15][2] = source;
     }
 }

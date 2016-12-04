@@ -1,6 +1,6 @@
 @import './boundaries.scss';
 
-.minion, .storage{
+.minion, .storage, .resource{
   height: $minionSize;
   width: $minionSize;
   border-radius: 50%;
@@ -59,6 +59,18 @@
 
 .storage{
   background-color: #f77341;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon{
+    color: #1b1b1b;
+    font-size: 15px;
+  }
+}
+
+.resource{
+  background-color: #daf745;
   display: flex;
   align-items: center;
   justify-content: center;
