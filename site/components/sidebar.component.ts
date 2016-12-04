@@ -3,7 +3,7 @@ import {TerrainService} from "../services/terrain.service";
 import {Minion} from "../objects/minion";
 
 @Component({
-    selector: 'minions-sidebar',
+    selector: 'sidebar',
     template: `
         <h1 style="margin-top: 0">Minions</h1>
         <div class="minionAvatar" *ngFor="let mn of minionList">
@@ -19,7 +19,7 @@ import {Minion} from "../objects/minion";
         <div class="button clear block" (click)="saveGameState()">Guardar <i class="icon-floppy"></i></div>
     `
 })
-export class MinionsListComponent {
+export class SidebarComponent {
     minionList:Minion[];
 
     constructor(private terrainService:TerrainService){

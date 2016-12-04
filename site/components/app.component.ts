@@ -7,7 +7,7 @@ import {BoundariesUtils} from "../objects/boundaries-utils";
         <h1 style="text-align: center;margin-top:25px">CodeInCode</h1>
         <terrain [style.width]="getWidth()"
                 [style.height]="getHeight()"></terrain>
-        <minions-sidebar></minions-sidebar>
+        <sidebar></sidebar>
     `
 })
 export class AppComponent {

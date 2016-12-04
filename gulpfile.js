@@ -24,7 +24,7 @@ const paths = {
     sass:[
         './sass/boundaries.scss',
         './sass/main.scss',
-        './sass/minion-sidebar.scss',
+        './sass/sidebar.scss',
         './sass/footer.scss',
         './sass/code-editor.scss',
         './sass/terrain-icons.scss'

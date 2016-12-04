@@ -5,7 +5,7 @@ import { FormsModule }   from '@angular/forms';
 
 import { AppComponent }     from './components/app.component';
 import {TerrainComponent} from './components/terrain.component';
-import {MinionsListComponent} from "./components/minions-list.component";
+import {SidebarComponent} from "./components/sidebar.component";
 import {FooterComponent} from "./components/footer.component";
 import {CodeEditorComponent} from "./components/code-editor.component";
 
@@ -17,7 +17,7 @@ import {TerrainService} from "./services/terrain.service";
         FormsModule,
         HttpModule
     ],
-    declarations: [ AppComponent, TerrainComponent, MinionsListComponent, FooterComponent, CodeEditorComponent],
+    declarations: [ AppComponent, TerrainComponent, SidebarComponent, FooterComponent, CodeEditorComponent],
     bootstrap:    [ AppComponent ],
     providers: [TerrainService]
 })
