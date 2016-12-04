@@ -7,12 +7,12 @@ export class Minion{
     private terrainHeight:number = BoundariesUtils.getTerrainHeight();
     private terrainWidth:number = BoundariesUtils.getTerrainWidth();
 
-    private stats;
+    stats;
     private maximumLoad = 10;
-    private customData;
     private inPause:boolean = false;
 
     private userCode = "";
+    private customData = {};
     private userFunctions;
 
     lookAt:string = '';
@@ -24,15 +24,6 @@ export class Minion{
             energy: 100,
             load: 0,
             strength: 0
-        };
-        this.customData = {};
-        this.userFunctions = {
-            getEnergy: this.getEnergy,
-            getHealth: this.getHealth,
-            getLoad: this.getLoad,
-            getTerrain: this.getTerrain,
-            dig: this.dig,
-            store: this.store
         };
     }
 
@@ -91,11 +82,22 @@ export class Minion{
 
     //CODE EXECUTION
     executeCode(){
+        this.userFunctions = {
+            myX: this.getX(),
+            myY: this.getY(),
+            getEnergy: this.getEnergy(),
+            getHealth: this.getHealth(),
+            getLoad: this.getLoad(),
+            getTerrain: this.getTerrain,
+            dig: this.dig,
+            store: this.store
+        };
+
         this.digDir = '';
         if(!this.inPause){
             this.lookAt = '';
             try {
-                let usrFun = new Function('fn', 'data',  this.userCode);
+                let usrFun = new Function('fn', 'data', this.userCode);
                 let res =  usrFun(this.userFunctions, this.customData);
                 this.parseResponse(res);
             }
@@ -107,6 +109,7 @@ export class Minion{
     }
     private parseResponse(res){
         if(res && res.hasOwnProperty('action')){
+            console.info(res.action);
             if(res.action == 'go'){
                 this.go(res.arg);
             }
@@ -116,6 +119,9 @@ export class Minion{
             else if(res.action == 'dig'){
                 this.dig(res.arg);
             }
+            else if(res.action == 'store'){
+                this.store(res.arg);
+            }
         }
     }
 
@@ -123,8 +129,11 @@ export class Minion{
 
     //POSSIBLE EVENTS
     private rest(){
-        if(this.stats.energy <100){
-            this.stats.energy++;
+        if(this.stats.energy < 100){
+            this.stats.energy += 5;
+            if(this.stats.energy > 100){
+                this.stats.energy = 100;
+            }
         }
     }
     private go(dir:string):void{
@@ -133,7 +142,7 @@ export class Minion{
             return;
         }
         this.lookAt = dir;
-        this.stats.energy--;
+        this.stats.energy-= 1;
         switch(dir){
             case 'U':
                 this.posY -= 1;
@@ -160,7 +169,6 @@ export class Minion{
             this.posY+(dir=='D'?1:(dir=='U'?-1:0))
                 ];
             if(oResource && oResource.constructor.name == 'ResourcesSource'){
-                console.log('FOUND');
                 if(this.stats.load < this.maximumLoad && oResource.getRemaining() > 0){
                     this.lookAt = dir;
                     this.digDir = 'dig'+dir;
@@ -182,7 +190,9 @@ export class Minion{
             this.posY+(dir=='D'?1:(dir=='U'?-1:0))
                 ];
             if(oStorage && oStorage.constructor.name == 'ResourcesStorage'){
-                console.log();
+                oStorage.store(this.stats.load);
+                this.digDir = 'dig'+dir;
+                this.stats.load = 0;
             }
         }
         else{
@@ -232,13 +242,13 @@ export class Minion{
         }
     }
     restoreStateData(preData) {
-        this.posX = preData.posX || 0;
-        this.posY = preData.posY || 0;
-        this.stats.health = preData.stats.load || 100;
-        this.stats.energy = preData.stats.energy || 100;
-        this.stats.load = preData.stats.load || 0;
-        this.stats.strength = preData.stats.strength || 1;
-        this.userCode = preData.userCode || "";
-        this.customData = preData.customData || {};
+        this.posX = preData.posX==undefined?0:preData.posX;
+        this.posY = preData.posY==undefined?0:preData.posY;
+        this.stats.health = preData.stats.health==undefined?100:preData.stats.health;
+        this.stats.energy = preData.stats.energy==undefined?100:preData.stats.energy;
+        this.stats.load = preData.stats.load==undefined?0:preData.stats.load;
+        this.stats.strength = preData.stats.strength==undefined?1:preData.stats.strength;
+        this.userCode = preData.userCode==undefined?'':preData.userCode;
+        this.customData = preData.customData==undefined?{}:preData.customData;
     }
 }

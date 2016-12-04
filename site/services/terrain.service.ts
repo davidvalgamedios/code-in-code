@@ -60,6 +60,16 @@ export class TerrainService{
         else{
             this.generateResourceSource();
         }
+
+        setInterval(any=>{
+            this.executeMinionCodes()
+        }, 1000);
+    }
+
+    executeMinionCodes(){
+        this.minionList.forEach(mn => {
+            mn.executeCode();
+        });
     }
 
     getMinionList(){

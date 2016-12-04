@@ -43,10 +43,6 @@ export class TerrainComponent {
         this.minionList = this.terrainService.getMinionList();
         this.storageList = this.terrainService.getStorageList();
         this.resourceList = this.terrainService.getResourceList();
-
-        setInterval(any=>{
-            this.executeMinionCodes()
-        }, 1000);
     }
 
     closeFooter(msg:string){
@@ -57,11 +53,5 @@ export class TerrainComponent {
     selectMinion(minion:Minion){
         minion.setPause(true);
         this.selectedMinion = minion;
-    }
-
-    executeMinionCodes(){
-        this.minionList.forEach(mn => {
-            mn.executeCode();
-        });
     }
 }

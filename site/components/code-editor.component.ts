@@ -25,6 +25,8 @@ import {Minion} from "../objects/minion";
                         <p>data.any</p>
                         <h3>Getters</h3>
                         <p>
+                            fn.myX()<br>
+                            fn.myY()<br>
                             fn.getEnergy()<br>
                             fn.getHealth()<br>
                             fn.getLoad()<br>

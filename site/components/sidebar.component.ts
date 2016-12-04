@@ -14,6 +14,7 @@ import {ResourcesStorage} from "../objects/resource-storage";
             <div class="indicators">
                 <div class="ind health" [style.width]="mn.getHealth()+'%'"></div>
                 <div class="ind energy" [style.width]="mn.getEnergy()+'%'"></div>
+                <div class="ind load" [style.width]="mn.getLoad()+'0%'"></div>
             </div>
         </div>
         
