@@ -5,10 +5,12 @@ import {Minion} from "../objects/minion";
 import {RandomUtils} from "../objects/random-utils";
 import {BoundariesUtils} from "../objects/boundaries-utils";
 import { UUID } from 'angular2-uuid';
+import {ResourcesStorage} from "../objects/resource-storage";
 
 @Injectable()
 export class TerrainService{
     private minionList:Minion[] = [];
+    private storageList:ResourcesStorage[] = [];
 
     constructor(/*private http:Http*/){
         let savedData = localStorage.getItem('cic-minions');
@@ -23,10 +25,26 @@ export class TerrainService{
         else{
             this.generateRandomMinions();
         }
+
+        savedData = localStorage.getItem('cic-storage');
+        if(savedData){
+            let savedStorage = JSON.parse(savedData);
+            savedStorage.forEach(st => {
+                let storage = new ResourcesStorage(0, 0);
+                storage.restoreStateData(st);
+                this.storageList.push(storage)
+            })
+        }
+        else{
+            this.generateResourceStorage();
+        }
     }
 
     getMinionList(){
         return this.minionList;
+    }
+    getStorageList(){
+        return this.storageList;
     }
 
     /*createRoom(){
@@ -58,5 +76,9 @@ export class TerrainService{
         randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
         randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
         this.minionList.push(new Minion(uuid, randX, randY, 4));
+    }
+
+    generateResourceStorage(){
+        this.storageList.push(new ResourcesStorage(2, 15));
     }
 }

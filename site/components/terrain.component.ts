@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {TerrainService} from "../services/terrain.service";
 import {Minion} from "../objects/minion";
+import {ResourcesStorage} from "../objects/resource-storage";
 
 @Component({
     selector: 'terrain',
@@ -13,16 +14,24 @@ import {Minion} from "../objects/minion";
                 <div class="eye" [ngClass]="mn.getLookAt()"></div>
         </div>
         
+        <div class="storage" *ngFor="let st of storageList" 
+            [style.top]="st.getY()"
+            [style.left]="st.getX()">
+                <i class="icon icon-box"></i>
+        </div>
+        
         <code-footer (notify)="closeFooter($event)" [selectedMinion]="selectedMinion"></code-footer>
     `
 })
 export class TerrainComponent {
-    minionList:Minion[];
-
+    private minionList:Minion[];
+    private storageList:ResourcesStorage[];
     private selectedMinion:Minion;
 
     constructor(private terrainService:TerrainService){
         this.minionList = this.terrainService.getMinionList();
+        this.storageList = this.terrainService.getStorageList();
+
         setInterval(any=>{
             this.executeMinionCodes()
         }, 1000);

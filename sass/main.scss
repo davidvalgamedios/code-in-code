@@ -1,10 +1,4 @@
-$lightGrey: #899198;
-$grey: #424242;
-$greyDark: #3C3F41;
-$greyDarkest: #313335;
-$almostDark: #272727;
-
-$sideBarWidth:200px;
+@import './boundaries.scss';
 
 body{
   background-color: $grey;

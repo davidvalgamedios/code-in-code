@@ -22,11 +22,12 @@ const paths = {
         "build/full-build.js"
     ],
     sass:[
+        './sass/boundaries.scss',
         './sass/main.scss',
         './sass/minion-sidebar.scss',
         './sass/footer.scss',
         './sass/code-editor.scss',
-        './sass/minion.scss'
+        './sass/terrain-icons.scss'
     ],
     devJs:[
         './site/**/*.ts'
