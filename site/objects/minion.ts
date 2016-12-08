@@ -7,7 +7,10 @@ export class Minion{
     private terrainHeight:number = BoundariesUtils.getTerrainHeight();
     private terrainWidth:number = BoundariesUtils.getTerrainWidth();
 
+
+    maxStats;
     stats;
+    expPoints;
     private maximumLoad = 10;
     private inPause:boolean = false;
 
@@ -20,12 +23,22 @@ export class Minion{
     resting:boolean = false;
 
     constructor(private id:string, private posX:number, private posY:number, private terrainDist){
+        this.maxStats = {
+            health: 100,
+            energy: 100,
+            load: 10
+        };
         this.stats = {
             health: 100,
             energy: 100,
             load: 0,
             strength: 0
         };
+
+        this.expPoints = {
+            battle: 0,
+            harvest: 0
+        }
     }
 
     //Getters
@@ -166,6 +179,7 @@ export class Minion{
                 ];
             if(oResource && oResource.constructor.name == 'ResourcesSource'){
                 if(this.stats.load < this.maximumLoad && oResource.getRemaining() > 0){
+                    this.expPoints.harvest++;
                     this.lookAt = dir;
                     this.digDir = 'dig'+dir;
                     oResource.dig(this.stats.strength);
@@ -183,6 +197,7 @@ export class Minion{
             this.posY+(dir=='D'?1:(dir=='U'?-1:0))
                 ];
             if(oStorage && oStorage.constructor.name == 'ResourcesStorage'){
+                this.expPoints.harvest+=5;
                 oStorage.store(this.stats.load);
                 this.digDir = 'dig'+dir;
                 this.stats.load = 0;
@@ -225,19 +240,36 @@ export class Minion{
             id: this.id,
             posX: this.posX,
             posY: this.posY,
-            stats: this.stats,
             userCode: this.userCode,
-            customData: this.customData
+            customData: this.customData,
+
+            stats: this.stats,
+            maxStats: this.maxStats,
+            expPoints: this.expPoints
         }
     }
     restoreStateData(preData) {
         this.posX = preData.posX==undefined?0:preData.posX;
         this.posY = preData.posY==undefined?0:preData.posY;
-        this.stats.health = preData.stats.health==undefined?100:preData.stats.health;
-        this.stats.energy = preData.stats.energy==undefined?100:preData.stats.energy;
-        this.stats.load = preData.stats.load==undefined?0:preData.stats.load;
-        this.stats.strength = preData.stats.strength==undefined?1:preData.stats.strength;
         this.userCode = preData.userCode==undefined?'':preData.userCode;
         this.customData = preData.customData==undefined?{}:preData.customData;
+
+        if(this.stats){
+            this.stats.health = preData.stats.health==undefined?100:preData.stats.health;
+            this.stats.energy = preData.stats.energy==undefined?100:preData.stats.energy;
+            this.stats.load = preData.stats.load==undefined?0:preData.stats.load;
+            this.stats.strength = preData.stats.strength==undefined?1:preData.stats.strength;
+        }
+
+        if(preData.maxStats){
+            this.maxStats.health = preData.maxStats.health==undefined?100:preData.maxStats.health;
+            this.maxStats.energy = preData.maxStats.energy==undefined?100:preData.maxStats.energy;
+            this.maxStats.load = preData.maxStats.load==undefined?10:preData.maxStats.load;
+        }
+
+        if(preData.expPoints){
+            this.expPoints.battle = preData.expPoints.battle==undefined?0:preData.expPoints.battle;
+            this.expPoints.harvest = preData.expPoints.harvest==undefined?0:preData.expPoints.harvest;
+        }
     }
 }
