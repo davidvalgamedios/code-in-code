@@ -51,6 +51,9 @@ export class TerrainComponent {
     }
 
     selectMinion(minion:Minion){
+        if(this.selectedMinion){
+            this.selectedMinion.setPause(false);
+        }
         minion.setPause(true);
         this.selectedMinion = minion;
     }
