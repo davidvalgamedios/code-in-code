@@ -3,7 +3,7 @@ const app      = express();
 const port = 8003;
 var http = require('http');
 var bodyParser   = require('body-parser');
-const env = 'dev';
+const env = 'prod';
 
 var server = http.createServer(app);
 

@@ -7,7 +7,9 @@
     "express": "4.14.x",
     "body-parser": "1.15.x",
     "ejs": "2.5.x",
-    "mongoose": "4.7.x"
+    "mongoose": "4.7.x",
+    "zone.js": "^0.6.25",
+    "reflect-metadata": "0.1.x"
   },
   "devDependencies": {
     "@angular/common": "2.2.x",
@@ -31,13 +33,11 @@
     "gulp-streamify": "^1.0.2",
     "gulp-typescript": "^3.1.2",
     "gulp-uglify": "^2.0.0",
-    "reflect-metadata": "0.1.x",
     "run-sequence": "^1.2.2",
     "rxjs": "5.0.0-beta.12",
     "systemjs": "0.19.x",
     "typescript": "2.1.x",
     "typings": "2.0.x",
-    "vinyl-source-stream": "^1.1.0",
-    "zone.js": "^0.6.25"
+    "vinyl-source-stream": "^1.1.0"
   }
 }
