@@ -208,7 +208,7 @@ export class Minion{
 
     //HELPERS
     private canIGo(dir):boolean{
-        if(!this.isValidPosition(dir)){
+        if(!this.isValidDirection(dir)){
             return false;
         }
         let oCell = this.terrainDist
@@ -220,6 +220,17 @@ export class Minion{
         return !oCell;
     }
     private isValidPosition(dir):boolean{
+        if(dir.length != 1){
+            return false;
+        }
+        if(dir == 'U' && this.posY == 0) return false;
+        if(dir == 'D' && this.posY == this.terrainHeight-1) return false;
+        if(dir == 'L' && this.posX == 0) return false;
+        if(dir == 'R' && this.posX == this.terrainWidth-1) return false;
+
+        return true;
+    }
+    private isValidDirection(dir):boolean{
         if((dir.length != 1 && dir.length != 2) ||
             dir.indexOf('U') != -1 && dir.indexOf('D') != -1 ||
             dir.indexOf('L') != -1 && dir.indexOf('R') != -1){
