@@ -216,18 +216,17 @@ export class Minion{
         return !oCell;
     }
     private isValidPosition(dir):boolean{
-        switch (dir){
-            case 'U':
-                return this.posY != 0;
-            case 'D':
-                return this.posY != this.terrainHeight-1;
-            case 'L':
-                return this.posX != 0;
-            case 'R':
-                return this.posX != this.terrainWidth-1;
-            default:
-                return false;
+        if((dir.length != 1 && dir.length != 2) ||
+            dir.indexOf('U') != -1 && dir.indexOf('D') != -1 ||
+            dir.indexOf('L') != -1 && dir.indexOf('R') != -1){
+            return false;
         }
+        if(dir.indexOf('U') != -1 && this.posY == 0) return false;
+        if(dir.indexOf('D') != -1 && this.posY == this.terrainHeight-1) return false;
+        if(dir.indexOf('L') != -1 && this.posX == 0) return false;
+        if(dir.indexOf('R') != -1 && this.posX == this.terrainWidth-1) return false;
+
+        return true;
     }
 
 
