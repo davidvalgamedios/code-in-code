@@ -25,17 +25,16 @@ import {Minion} from "../objects/minion";
                         <p>data.any</p>
                         <h3>Getters</h3>
                         <p>
-                            fn.myX()<br>
-                            fn.myY()<br>
-                            fn.getEnergy()<br>
-                            fn.getHealth()<br>
-                            fn.getLoad()<br>
-                            fn.getTerrain(x, y)
+                            fn.myX<br>
+                            fn.myY<br>
+                            fn.getEnergy<br>
+                            fn.getHealth<br>
+                            fn.getLoad
                         </p>
                         <h3>Acciones</h3>
                         <p>Formato: (action: %, arg: %)</p>
                         <p>
-                            go(dir) [U, D, L, R]<br>
+                            go(dir) [U D L R]<br>
                             rest()<br>
                             dig(dir)<br>
                             store(dir)
@@ -58,7 +57,7 @@ export class CodeEditorComponent implements OnInit{
     @Input() selectedMinion:Minion;
     @Output() notify: EventEmitter<string> = new EventEmitter<string>();
     temporalCode:string;
-    selectedTab:string = 'vars';
+    selectedTab:string = 'help';
 
     constructor(){
     }

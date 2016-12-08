@@ -148,22 +148,11 @@ export class Minion{
         };
         this.lookAt = dir;
         this.stats.energy-= 1;
-        switch(dir){
-            case 'U':
-                this.posY -= 1;
-                break;
-            case 'D':
-                this.posY += 1;
-                break;
-            case 'R':
-                this.posX += 1;
-                break;
-            case 'L':
-                this.posX -= 1;
-                break;
-            default:
-                return;
-        }
+        if(dir.indexOf('U')!=-1) this.posY -= 1;
+        if(dir.indexOf('D')!=-1) this.posY += 1;
+        if(dir.indexOf('R')!=-1) this.posX += 1;
+        if(dir.indexOf('L')!=-1) this.posX -= 1;
+
         this.terrainDist[old.x][old.y] = null;
         this.terrainDist[this.posX][this.posY] = this;
     }
@@ -209,9 +198,9 @@ export class Minion{
         }
         let oCell = this.terrainDist
             [
-        this.posX+(dir=='R'?1:(dir=='L'?-1:0))
+        this.posX+(dir.indexOf('R')!=-1?1:(dir.indexOf('L')!=-1?-1:0))
             ][
-        this.posY+(dir=='D'?1:(dir=='U'?-1:0))
+        this.posY+(dir.indexOf('D')!=-1?1:(dir.indexOf('U')!=-1?-1:0))
             ];
         return !oCell;
     }
