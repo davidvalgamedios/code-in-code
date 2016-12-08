@@ -1,0 +1,259 @@
+body {
+  background-color: #424242;
+  color: #899198;
+  margin: 0;
+  font-family: sans-serif; }
+
+boilerplate {
+  display: block;
+  height: 100%;
+  margin-right: 200px; }
+
+terrain {
+  display: block;
+  border: 1px solid #313335;
+  margin: 0 auto;
+  position: relative; }
+  terrain .minion {
+    position: absolute;
+    cursor: pointer; }
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #313335; }
+  .button.clear {
+    background-color: #3C3F41; }
+  .button.block {
+    display: block;
+    text-align: center; }
+
+sidebar {
+  position: fixed;
+  width: 200px;
+  height: 100vh;
+  right: 0;
+  top: 0;
+  background-color: #313335;
+  z-index: 10;
+  padding: 25px;
+  box-sizing: border-box; }
+  sidebar .minionAvatar {
+    background-color: #3C3F41;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    margin-bottom: 10px; }
+    sidebar .minionAvatar .minionContainer {
+      flex: 0;
+      padding-right: 10px; }
+      sidebar .minionAvatar .minionContainer .minion, sidebar .minionAvatar .minionContainer .storage {
+        position: relative; }
+    sidebar .minionAvatar .indicators {
+      flex: 1; }
+      sidebar .minionAvatar .indicators .ind {
+        height: 10px;
+        margin-bottom: 5px;
+        font-size: 13px; }
+        sidebar .minionAvatar .indicators .ind.bold {
+          font-weight: bold; }
+        sidebar .minionAvatar .indicators .ind:last-of-type {
+          margin-bottom: 0; }
+      sidebar .minionAvatar .indicators.text {
+        text-align: center; }
+      sidebar .minionAvatar .indicators .health {
+        background-color: #36c50e; }
+      sidebar .minionAvatar .indicators .energy {
+        background-color: #11caff; }
+      sidebar .minionAvatar .indicators .load {
+        background-color: #daf745; }
+
+.footer {
+  background-color: #272727;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  padding: 25px;
+  z-index: 15;
+  -webkit-transition: bottom 1s;
+  transition: bottom 1s;
+  box-sizing: border-box; }
+  .footer .close {
+    background-color: #272727;
+    position: absolute;
+    right: 25px;
+    bottom: 100%;
+    cursor: pointer;
+    padding: 5px 0;
+    font-size: 25px; }
+
+.codeEditorContainer {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  padding: 25px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.3);
+  flex-direction: column; }
+  .codeEditorContainer .editorLayout {
+    max-width: 950px;
+    max-height: 85vh;
+    display: flex;
+    width: 100%;
+    height: 100%; }
+    .codeEditorContainer .editorLayout textarea.codeEditor {
+      font-family: monospace;
+      flex: 1;
+      background-color: #424242;
+      color: white;
+      padding: 15px;
+      font-size: 15px;
+      resize: none;
+      border-color: #313335;
+      white-space: pre; }
+      .codeEditorContainer .editorLayout textarea.codeEditor:focus {
+        outline: none; }
+    .codeEditorContainer .editorLayout .editorHelp {
+      box-sizing: border-box;
+      min-width: 250px;
+      flex: 0;
+      background-color: #313335; }
+      .codeEditorContainer .editorLayout .editorHelp .tabSelector {
+        display: flex;
+        background-color: #3C3F41; }
+        .codeEditorContainer .editorLayout .editorHelp .tabSelector #varsTab, .codeEditorContainer .editorLayout .editorHelp .tabSelector #helpTab {
+          padding: 15px;
+          font-size: 20px;
+          cursor: pointer; }
+          .codeEditorContainer .editorLayout .editorHelp .tabSelector #varsTab.active, .codeEditorContainer .editorLayout .editorHelp .tabSelector #helpTab.active {
+            background-color: #313335; }
+        .codeEditorContainer .editorLayout .editorHelp .tabSelector #varsTab {
+          flex: 1; }
+        .codeEditorContainer .editorLayout .editorHelp .tabSelector #helpTab {
+          flex: 0; }
+      .codeEditorContainer .editorLayout .editorHelp .tabSection {
+        padding: 15px; }
+  .codeEditorContainer .editorFooter {
+    flex: 0;
+    width: 100%;
+    max-width: 950px;
+    padding: 10px;
+    background-color: #313335;
+    box-sizing: border-box; }
+
+@keyframes digR {
+  0% {
+    transform: translateX(0); }
+  5% {
+    transform: translateX(5px); }
+  15% {
+    transform: translateX(0); }
+  100% {
+    transform: translateX(0); } }
+
+@keyframes digL {
+  0% {
+    transform: translateX(0); }
+  5% {
+    transform: translateX(-5px); }
+  15% {
+    transform: translateX(0); }
+  100% {
+    transform: translateX(0); } }
+
+@keyframes digU {
+  0% {
+    transform: translateY(0); }
+  5% {
+    transform: translateY(-5px); }
+  15% {
+    transform: translateX(0); }
+  100% {
+    transform: translateY(0); } }
+
+@keyframes digD {
+  0% {
+    transform: translateY(0); }
+  5% {
+    transform: translateY(5px); }
+  15% {
+    transform: translateX(0); }
+  100% {
+    transform: translateY(0); } }
+
+.minion, .storage, .resource {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: absolute;
+  cursor: pointer;
+  transition: top 1s, left 1s; }
+  .minion.selected, .storage.selected, .resource.selected {
+    box-shadow: 0 0 16px 5px #ff9f28; }
+  .minion.digR, .storage.digR, .resource.digR {
+    animation: digR 1s infinite; }
+  .minion.digL, .storage.digL, .resource.digL {
+    animation: digL 1s infinite; }
+  .minion.digU, .storage.digU, .resource.digU {
+    animation: digU 1s infinite; }
+  .minion.digD, .storage.digD, .resource.digD {
+    animation: digD 1s infinite; }
+
+.minion {
+  background-color: #fff;
+  display: inline-block;
+  border: 3px solid #f77341; }
+  .minion .eye {
+    background-color: black;
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    position: absolute;
+    top: 25%;
+    left: 25%; }
+    .minion .eye.U {
+      top: -5%;
+      left: 25%; }
+    .minion .eye.D {
+      top: 50%;
+      left: 25%; }
+    .minion .eye.L {
+      top: 25%;
+      left: -5%; }
+    .minion .eye.R {
+      top: 25%;
+      left: 50%; }
+    .minion .eye.rest {
+      top: 50% !important;
+      left: 25% !important;
+      height: 2px; }
+
+.storage {
+  background-color: #f77341;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .storage .icon {
+    color: #1b1b1b;
+    font-size: 15px; }
+
+.resource {
+  background-color: #daf745;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .resource .icon {
+    color: #1b1b1b;
+    font-size: 15px; }

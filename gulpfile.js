@@ -80,14 +80,18 @@ gulp.task('cleanJs', function () {
     return del('build/*');
 });
 
-gulp.task('cleanCss', function () {
-    return del('dist/css/*');
-});
-
 gulp.task('sass', function () {
     return gulp
         .src(paths.sass)
         .pipe(concat('site.css'))
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./dist/css'));
+});
+
+gulp.task('sassDev', function () {
+    return gulp
+        .src(paths.sass)
+        .pipe(concat('site-dev.css'))
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./dist/css'));
 });
@@ -103,11 +107,11 @@ gulp.task('buildJs', function() {
 });
 
 gulp.task('buildCss', function() {
-    runSequence('cleanCss', 'sass');
+    runSequence('sass');
 });
 
 gulp.task('watch', function(){
-    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths.sass, ['sassDev']);
     gulp.watch(paths.devJs, ['tsc'])
 });
 
