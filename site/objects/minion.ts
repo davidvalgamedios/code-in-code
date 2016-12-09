@@ -1,6 +1,7 @@
 import {BoundariesUtils} from "./boundaries-utils";
 import {ResourcesSource} from "./resource-source";
 import {ResourcesStorage} from "./resource-storage";
+import {CommonVariablesService} from "../services/common-variables.service";
 
 export class Minion{
     private minionSize:number = BoundariesUtils.getMinionSize();
@@ -22,7 +23,7 @@ export class Minion{
     digDir: string = "";
     resting:boolean = false;
 
-    constructor(private id:string, private posX:number, private posY:number, private terrainDist){
+    constructor(private id:string, private posX:number, private posY:number, private terrainDist, private commonVarsService){
         this.maxStats = {
             health: 100,
             energy: 100,
@@ -92,6 +93,9 @@ export class Minion{
     setPause(doPause:boolean){
         this.inPause = doPause;
     }
+    getCustomData(){
+        return this.customData;
+    }
 
 
     //CODE EXECUTION
@@ -111,8 +115,9 @@ export class Minion{
         if(!this.inPause){
             this.lookAt = '';
             try {
-                let usrFun = new Function('fn', 'data', this.userCode);
-                let res =  usrFun(this.userFunctions, this.customData);
+                let usrFun = new Function('fn', 'data', 'common', this.userCode);
+                let res =  usrFun(this.userFunctions, this.customData, this.commonVarsService.getVariables());
+
                 this.parseResponse(res);
             }
             catch(err){

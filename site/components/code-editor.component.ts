@@ -1,5 +1,6 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {Minion} from "../objects/minion";
+import {CommonVariablesService} from "../services/common-variables.service";
 
 @Component({
     selector: 'code-editor',
@@ -21,8 +22,9 @@ import {Minion} from "../objects/minion";
                         </div>
                     </div>
                     <div *ngIf="selectedTab=='help'" class="tabSection">
-                        <h3>Data</h3>
+                        <h3>Datos</h3>
                         <p>data.any</p>
+                        <p>common.any</p>
                         <h3>Getters</h3>
                         <p>
                             fn.myX<br>
@@ -41,7 +43,17 @@ import {Minion} from "../objects/minion";
                         </p>
                     </div>
                     <div *ngIf="selectedTab=='vars'" class="tabSection">
+                        <h3>Globales (common)</h3>
+                        <div *ngFor="let vId of getCommonDataKeys()">
+                            <b>{{vId}}</b>
+                            {{userCommonData[vId]}}
+                        </div>
                         
+                        <h3>Locales (data)</h3>
+                        <div *ngFor="let vId of getCustomDataKeys()">
+                            <b>{{vId}}</b>
+                            {{userCustomData[vId]}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,13 +69,16 @@ export class CodeEditorComponent implements OnInit{
     @Input() selectedMinion:Minion;
     @Output() notify: EventEmitter<string> = new EventEmitter<string>();
     temporalCode:string;
-    selectedTab:string = 'help';
+    selectedTab:string = 'vars';
+    private userCustomData;
+    private userCommonData;
 
-    constructor(){
-    }
+    constructor(private commonVarsService:CommonVariablesService){}
 
     ngOnInit(){
         this.temporalCode = JSON.parse(JSON.stringify(this.selectedMinion.getUserCode()));
+        this.userCustomData = this.selectedMinion.getCustomData();
+        this.userCommonData = this.commonVarsService.getVariables();
     }
 
     closeEditor(){
@@ -73,5 +88,13 @@ export class CodeEditorComponent implements OnInit{
     saveCode(){
         this.selectedMinion.setUserCode(this.temporalCode);
         this.closeEditor()
+    }
+
+    getCustomDataKeys(){
+        return Object.keys(this.userCustomData);
+    }
+
+    getCommonDataKeys(){
+        return Object.keys(this.userCommonData);
     }
 }

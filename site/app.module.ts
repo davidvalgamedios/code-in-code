@@ -10,6 +10,7 @@ import {FooterComponent} from "./components/footer.component";
 import {CodeEditorComponent} from "./components/code-editor.component";
 
 import {TerrainService} from "./services/terrain.service";
+import {CommonVariablesService} from "./services/common-variables.service";
 
 @NgModule({
     imports: [
@@ -19,6 +20,6 @@ import {TerrainService} from "./services/terrain.service";
     ],
     declarations: [ AppComponent, TerrainComponent, SidebarComponent, FooterComponent, CodeEditorComponent],
     bootstrap:    [ AppComponent ],
-    providers: [TerrainService]
+    providers: [TerrainService, CommonVariablesService]
 })
 export class AppModule {}

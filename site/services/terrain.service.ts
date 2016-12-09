@@ -7,6 +7,7 @@ import {BoundariesUtils} from "../objects/boundaries-utils";
 import { UUID } from 'angular2-uuid';
 import {ResourcesStorage} from "../objects/resource-storage";
 import {ResourcesSource} from "../objects/resource-source";
+import {CommonVariablesService} from "./common-variables.service";
 
 @Injectable()
 export class TerrainService{
@@ -15,13 +16,13 @@ export class TerrainService{
     private storageList:ResourcesStorage[] = [];
     private resourceList:ResourcesSource[] = [];
 
-    constructor(/*private http:Http*/){
+    constructor(/*private http:Http*/private commonVarsService:CommonVariablesService){
         this.initTerrainDist();
         let savedData = localStorage.getItem('cic-minions');
         if(savedData){
             let savedMinions = JSON.parse(savedData);
             savedMinions.forEach(mn => {
-                let minion = new Minion(mn.id, 0, 0, this.terrainDist);
+                let minion = new Minion(mn.id, 0, 0, this.terrainDist, this.commonVarsService);
                 minion.restoreStateData(mn);
                 this.minionList.push(minion);
                 this.terrainDist[minion.getX()][minion.getY()] = minion;
@@ -126,14 +127,14 @@ export class TerrainService{
         let uuid = UUID.UUID();
         let randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
         let randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
-        let newMinion = new Minion(uuid, randX, randY, this.terrainDist);
+        let newMinion = new Minion(uuid, randX, randY, this.terrainDist, this.commonVarsService);
         this.minionList.push(newMinion);
         this.terrainDist[randX][randY] = newMinion;
 
         uuid = UUID.UUID();
         randX = RandomUtils.randomInt(0, BoundariesUtils.getTerrainWidth()-1);
         randY = RandomUtils.randomInt(0, BoundariesUtils.getTerrainHeight()-1);
-        newMinion = new Minion(uuid, randX, randY, this.terrainDist);
+        newMinion = new Minion(uuid, randX, randY, this.terrainDist, this.commonVarsService);
         this.minionList.push(newMinion);
         this.terrainDist[randX][randY] = newMinion;
     }
