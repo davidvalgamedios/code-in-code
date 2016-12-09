@@ -1,4 +1,3 @@
 build
 typings
-dist/dev/*
-!dist/systemjs.config.js
+dist/css/site-dev.css
