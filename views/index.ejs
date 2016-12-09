@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <% if (env == 'dev') { %>
+    <link href="/dist/css/site-dev.css" type="text/css" rel="stylesheet">
+    <% } else{ %>
     <link href="/dist/css/site.css" type="text/css" rel="stylesheet">
+    <% } %>
     <link href="/dist/css/fontello.css" type="text/css" rel="stylesheet">
 </head>
 <body>
