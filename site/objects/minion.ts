@@ -8,11 +8,8 @@ export class Minion{
     private terrainHeight:number = BoundariesUtils.getTerrainHeight();
     private terrainWidth:number = BoundariesUtils.getTerrainWidth();
 
-
-    maxStats;
     stats;
     expPoints;
-    private maximumLoad = 10;
     private inPause:boolean = false;
 
     private userCode = "";
@@ -24,15 +21,13 @@ export class Minion{
     resting:boolean = false;
 
     constructor(private id:string, private posX:number, private posY:number, private terrainDist, private commonVarsService){
-        this.maxStats = {
-            health: 100,
-            energy: 100,
-            load: 10
-        };
         this.stats = {
             health: 100,
+            maxHealth: 100,
             energy: 100,
+            maxEnergy: 100,
             load: 0,
+            maxLoad: 10,
             strength: 0
         };
 
@@ -87,15 +82,18 @@ export class Minion{
     getUserCode():string{
         return this.userCode;
     }
+    getCustomData(){
+        return this.customData;
+    }
+
+    //Setters
     setUserCode(code:string){
         this.userCode = code;
     }
     setPause(doPause:boolean){
         this.inPause = doPause;
     }
-    getCustomData(){
-        return this.customData;
-    }
+
 
 
     //CODE EXECUTION
@@ -183,12 +181,18 @@ export class Minion{
             this.posY+(dir=='D'?1:(dir=='U'?-1:0))
                 ];
             if(oResource && oResource.constructor.name == 'ResourcesSource'){
-                if(this.stats.load < this.maximumLoad && oResource.getRemaining() > 0){
-                    this.expPoints.harvest++;
-                    this.lookAt = dir;
-                    this.digDir = 'dig'+dir;
-                    oResource.dig(this.stats.strength);
-                    this.stats.load += this.stats.strength;
+                if(this.stats.load < this.stats.maxLoad){
+                    let digged = oResource.dig(this.stats.strength);
+                    if(digged > 0){
+                        this.expPoints.harvest++;
+                        this.lookAt = dir;
+                        this.digDir = 'dig'+dir;
+                        this.stats.load += digged;
+
+                        if(this.stats.load > this.stats.maxLoad){//For removing max stats
+                            this.stats.load = JSON.parse(JSON.stringify(this.stats.maxLoad));
+                        }
+                    }
                 }
             }
         }
@@ -260,7 +264,6 @@ export class Minion{
             customData: this.customData,
 
             stats: this.stats,
-            maxStats: this.maxStats,
             expPoints: this.expPoints
         }
     }
@@ -272,15 +275,12 @@ export class Minion{
 
         if(this.stats){
             this.stats.health = preData.stats.health==undefined?100:preData.stats.health;
+            this.stats.maxHealth = preData.stats.maxHealth==undefined?100:preData.stats.maxHealth;
             this.stats.energy = preData.stats.energy==undefined?100:preData.stats.energy;
+            this.stats.maxEnergy = preData.stats.maxEnergy==undefined?100:preData.stats.maxEnergy;
             this.stats.load = preData.stats.load==undefined?0:preData.stats.load;
+            this.stats.maxLoad = preData.stats.maxLoad==undefined?10:preData.stats.maxLoad;
             this.stats.strength = preData.stats.strength==undefined?1:preData.stats.strength;
-        }
-
-        if(preData.maxStats){
-            this.maxStats.health = preData.maxStats.health==undefined?100:preData.maxStats.health;
-            this.maxStats.energy = preData.maxStats.energy==undefined?100:preData.maxStats.energy;
-            this.maxStats.load = preData.maxStats.load==undefined?10:preData.maxStats.load;
         }
 
         if(preData.expPoints){

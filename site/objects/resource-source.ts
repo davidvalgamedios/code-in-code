@@ -1,14 +1,16 @@
 import {BoundariesUtils} from "./boundaries-utils";
+import {Subject} from "rxjs/Subject";
+
 
 export class ResourcesSource{
+    //@Output() notify: EventEmitter<string> = new EventEmitter<string>();
     private minionSize:number = BoundariesUtils.getMinionSize();
 
     private stats = {
-        remaining: 10000
+        remaining: 2500
     };
 
-    constructor(private posX:number, private posY:number){
-
+    constructor(private posX:number, private posY:number, private serviceEvent:Subject<any>){
     }
     //Getters
     getX(): number{
@@ -28,7 +30,16 @@ export class ResourcesSource{
         return this.stats.remaining>0?this.stats.remaining:0;
     }
     dig(value:number){
-        this.stats.remaining -= value;
+        if(this.stats.remaining >= value){
+            this.stats.remaining -= value;
+            return value;
+        }
+        else{
+            let remaining = this.stats.remaining;
+            this.stats.remaining = 0;
+            this.serviceEvent.next(this);
+            return remaining;
+        }
     }
 
     getStateData(){
@@ -39,10 +50,11 @@ export class ResourcesSource{
         }
     }
     restoreStateData(preData){
-        this.posX = preData.posX || 0;
-        this.posY = preData.posY || 0;
-        this.stats = preData.stats || {
-                stored: 0
-            };
+        this.posX = preData.posX==undefined?0:preData.posX;
+        this.posY = preData.posY==undefined?0:preData.posY;
+
+        if(preData.stats){
+            this.stats.remaining = preData.stats.remaining==undefined?2500:preData.stats.remaining;
+        }
     }
 }
