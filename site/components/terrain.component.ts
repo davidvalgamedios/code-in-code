@@ -25,6 +25,7 @@ import {ResourcesSource} from "../objects/resource-source";
             [style.top]="rs.getYpx()"
             [style.left]="rs.getXpx()">
                 <i class="icon icon-diamond"></i>
+                <div class="resourceInfo">{{rs.getRemaining()}}</div>
         </div>
         <div class="terrainBackground" (click)="closeFooter('please')"></div>
         <code-footer (notify)="closeFooter($event)" [selectedMinion]="selectedMinion"></code-footer>
