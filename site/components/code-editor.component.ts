@@ -23,15 +23,17 @@ import {CommonVariablesService} from "../services/common-variables.service";
                     </div>
                     <div *ngIf="selectedTab=='help'" class="tabSection">
                         <h3>Datos</h3>
-                        <p>data.any</p>
-                        <p>common.any</p>
+                        <p>data.ANY</p>
+                        <p>common.ANY</p>
                         <h3>Getters</h3>
                         <p>
-                            fn.myX<br>
-                            fn.myY<br>
-                            fn.getEnergy<br>
-                            fn.getHealth<br>
-                            fn.getLoad
+                            this.getX()<br>
+                            this.getY()<br>
+                            this.getEnergy()<br>
+                            this.getHealth()<br>
+                            this.getLoad()<br>
+                            this.loadIsFull()<br>
+                            this.getSurroundings() -> OBJ(dir:"Minion|Source|Resource")
                         </p>
                         <h3>Acciones</h3>
                         <p>Formato: (action: %, arg: %)</p>

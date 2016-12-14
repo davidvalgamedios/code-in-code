@@ -1,7 +1,6 @@
 import {BoundariesUtils} from "./boundaries-utils";
 import {ResourcesSource} from "./resource-source";
 import {ResourcesStorage} from "./resource-storage";
-import {CommonVariablesService} from "../services/common-variables.service";
 
 export class Minion{
     private minionSize:number = BoundariesUtils.getMinionSize();
@@ -14,7 +13,6 @@ export class Minion{
 
     private userCode = "";
     private customData = {};
-    private userFunctions;
 
     lookAt:string = '';
     digDir: string = "";
@@ -67,6 +65,9 @@ export class Minion{
     getLoad():number{
         return this.stats.load;
     }
+    loadIsFull():boolean{
+        return this.stats.load >= this.stats.maxLoad;
+    }
     getTerrain(x,y):any{
         let object = this.terrainDist[x][y];
         if(object){
@@ -103,30 +104,22 @@ export class Minion{
 
     //CODE EXECUTION
     executeCode(){
-        this.userFunctions = {
-            myX: this.getX(),
-            myY: this.getY(),
-            getEnergy: this.getEnergy(),
-            getHealth: this.getHealth(),
-            getLoad: this.getLoad(),
-            getTerrain: this.getTerrain,
-            dig: this.dig,
-            store: this.store
-        };
+        console.log(this);
         this.resting = false;
         this.digDir = '';
         if(!this.inPause){
             this.lookAt = '';
+            let res;
             try {
-                let usrFun = new Function('fn', 'data', 'common', this.userCode);
-                let res =  usrFun(this.userFunctions, this.customData, this.commonVarsService.getVariables());
-
-                this.parseResponse(res);
+                let usrFun = new Function('data', 'common', this.userCode).bind(this);
+                res =  usrFun(this.customData, this.commonVarsService.getVariables());
             }
             catch(err){
                 console.info("Errorcito");
                 console.info(err.message);
+                return;
             }
+            this.parseResponse(res);
         }
     }
     private parseResponse(res){
@@ -288,6 +281,26 @@ export class Minion{
 
 
     //HELPERS
+    private getSurroundings(){
+        let allDirs = ['U', 'D', 'L', 'R'];
+        let surroundings = {};
+
+        allDirs.forEach(dir => {
+            if(this.isValidPosition(dir)){
+                let oCell:Minion|ResourcesStorage|ResourcesSource = this.terrainDist
+                    [
+                this.posX+(dir.indexOf('R')!=-1?1:(dir.indexOf('L')!=-1?-1:0))
+                    ][
+                this.posY+(dir.indexOf('D')!=-1?1:(dir.indexOf('U')!=-1?-1:0))
+                    ];
+                if(oCell){
+                    surroundings[dir] = oCell.getType();
+                }
+            }
+        });
+
+        return surroundings;
+    }
     private canIGo(dir):boolean{
         if(!this.isValidDirection(dir)){
             return false;
@@ -332,7 +345,6 @@ export class Minion{
         this.lastErrors.push(oNow.getHours()+':'+oNow.getMinutes()+':'+oNow.getSeconds()+' - '+msg);
     }
 
-
     //SAVING UTILITIES
     getStateData(){
         return {
@@ -365,6 +377,61 @@ export class Minion{
         if(preData.expPoints){
             this.expPoints.battle = preData.expPoints.battle==undefined?0:preData.expPoints.battle;
             this.expPoints.harvest = preData.expPoints.harvest==undefined?0:preData.expPoints.harvest;
+        }
+    }
+
+    private cosas(data, common){
+
+        //RESTING
+        if(data.isResting){
+            if(this.getEnergy() >= 100){
+                data.isResting = false;
+            }
+            else{
+                return{
+                    action: 'rest'
+                }
+            }
+        }
+        if(this.getEnergy() == 0){
+            data.isResting = true;
+            return{
+                action: 'rest'
+            }
+        }
+        //RESTING
+
+
+        if(this.loadIsFull()){//MUST STORE
+
+        }
+        else{//MUST DIG
+            let dir = getNearSource();
+            if(dir){
+                return {action:'dig',arg:dir}
+            }
+            else if(common.sourceX && common.sourceY){//Check if anybody knows where is source
+
+            }
+            else if(data.imInPosition){//Check if Im already looking for source
+
+            }
+            else{//Go to position
+
+            }
+        }
+
+        return null;
+
+        function getNearSource(){
+            let nearObjects = this.getSurroundings();
+            let dest = null;
+            Object.keys(nearObjects).forEach(dir => {
+                if(nearObjects[dir] == 'Source'){
+                    dest = dir;
+                }
+            });
+            return dest;
         }
     }
 }
