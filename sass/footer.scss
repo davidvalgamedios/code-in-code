@@ -21,4 +21,17 @@
     padding: 5px 0;
     font-size: 25px;
   }
+
+  .footerContent{
+    display: flex;
+    align-items: center;
+
+    .rightContent, .errorsContainer{
+      flex: 1;
+    }
+
+    .rightContent{
+      text-align: right;
+    }
+  }
 }

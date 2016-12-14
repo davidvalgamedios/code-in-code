@@ -3,7 +3,8 @@ const app      = express();
 const port = 8000;
 var http = require('http');
 var bodyParser   = require('body-parser');
-const env = 'dev';
+
+const env = process.argv[2]=='-prod'?'prod':'dev';
 
 var server = http.createServer(app);
 

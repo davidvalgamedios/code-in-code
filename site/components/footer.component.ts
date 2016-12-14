@@ -6,9 +6,15 @@ import {Minion} from "../objects/minion";
     template: `
         <div class="footer" [style.bottom]="selectedMinion?'0':'-150px'">
             <div class="close" (click)="closeFooter()"><i class="icon-cancel"></i></div>
-            <div *ngIf="selectedMinion">    
-                <div class="button" (click)="editMinionCode()">Editar código <i class="icon-code"></i></div>
-                {{selectedMinion.getId()}}
+            <div *ngIf="selectedMinion" class="footerContent">    
+                <div class="errorsContainer">
+                    <div *ngFor="let sErr of selectedMinion.lastErrors">
+                        {{sErr}}
+                    </div>
+                </div>
+                <div class="rightContent">
+                    <div class="button" (click)="editMinionCode()">Editar código <i class="icon-code"></i></div>
+                </div>
             </div>
         </div>
         
@@ -29,10 +35,12 @@ export class FooterComponent {
     }
 
     closeEditor(){
+        this.selectedMinion.setPause(false);
         this.isEditingCode = false;
     }
 
     editMinionCode(){
+        this.selectedMinion.setPause(true);
         this.isEditingCode = true;
     }
 }

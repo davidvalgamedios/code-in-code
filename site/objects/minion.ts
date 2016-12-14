@@ -20,6 +20,8 @@ export class Minion{
     digDir: string = "";
     resting:boolean = false;
 
+    lastErrors:Array<string> = [];
+
     constructor(private id:string, private posX:number, private posY:number, private terrainDist, private commonVarsService){
         this.stats = {
             health: 100,
@@ -157,7 +159,13 @@ export class Minion{
         }
     }
     private go(dir:string):void{
-        if(this.getEnergy() == 0 || !this.canIGo(dir)){
+        if(this.getEnergy() == 0){
+            this.addError('No energy');
+            this.lookAt = '';
+            return;
+        }
+        if(!this.canIGo(dir)){
+            this.addError('Invalid position');
             this.lookAt = '';
             return;
         }
@@ -280,6 +288,13 @@ export class Minion{
         if(dir.indexOf('R') != -1 && this.posX == this.terrainWidth-1) return false;
 
         return true;
+    }
+    private addError(msg):void{
+        let oNow = new Date();
+        if(this.lastErrors.length >2){
+            this.lastErrors.shift();
+        }
+        this.lastErrors.push(oNow.getHours()+':'+oNow.getMinutes()+':'+oNow.getSeconds()+' - '+msg);
     }
 
 
