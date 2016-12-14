@@ -54,11 +54,27 @@
 
 .minion{
   background-color: #fff;
-  display: inline-block;
   border: 3px solid #f77341;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 
   &.selected{
     box-shadow: 0 0 16px 5px rgb(255, 159, 40);
+  }
+
+  &.U{
+    align-items: flex-start;
+  }
+  &.D{
+    align-items: flex-end;
+  }
+  &.L{
+    justify-content: flex-start;
+  }
+  &.R{
+    justify-content: flex-end;
   }
 
   .eye{
@@ -67,30 +83,8 @@
     width: 10px;
     display: inline-block;
     border-radius: 50%;
-    position: absolute;
-    top: 25%;
-    left: 25%;
-
-    &.U{
-      top: -5%;
-      left: 25%;
-    }
-    &.D{
-      top: 50%;
-      left: 25%;
-    }
-    &.L{
-      top: 25%;
-      left: -5%;
-    }
-    &.R{
-      top: 25%;
-      left: 50%;
-    }
 
     &.rest{
-      top: 50% !important;
-      left: 25% !important;
       height: 2px;
     }
   }

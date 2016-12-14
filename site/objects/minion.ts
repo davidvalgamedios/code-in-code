@@ -138,6 +138,9 @@ export class Minion{
             else if(res.action == 'store'){
                 this.store(res.arg);
             }
+            else if(res.action == 'run'){
+                this.run(res.arg);
+            }
         }
     }
 
@@ -162,7 +165,26 @@ export class Minion{
             x:this.posX,
             y:this.posY,
         };
-        this.lookAt = dir;
+        this.lookAt = dir.length == 2?dir[0]+' '+dir[1]:dir;
+        this.stats.energy-= 1;
+        if(dir.indexOf('U')!=-1) this.posY -= 1;
+        if(dir.indexOf('D')!=-1) this.posY += 1;
+        if(dir.indexOf('R')!=-1) this.posX += 1;
+        if(dir.indexOf('L')!=-1) this.posX -= 1;
+
+        this.terrainDist[old.x][old.y] = null;
+        this.terrainDist[this.posX][this.posY] = this;
+    }
+    private run(dir:string):void{
+        if(this.getEnergy() == 0 || !this.canIGo(dir)){
+            this.lookAt = '';
+            return;
+        }
+        let old = {
+            x:this.posX,
+            y:this.posY,
+        };
+        this.lookAt = dir.length == 2?dir[0]+' '+dir[1]:dir;
         this.stats.energy-= 1;
         if(dir.indexOf('U')!=-1) this.posY -= 1;
         if(dir.indexOf('D')!=-1) this.posY += 1;
