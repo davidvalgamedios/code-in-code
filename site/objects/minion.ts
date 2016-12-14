@@ -157,15 +157,18 @@ export class Minion{
                 this.stats.energy = 100;
             }
         }
+        else{
+            this.addError('Resting at full energy');
+        }
     }
     private go(dir:string):void{
         if(this.getEnergy() == 0){
-            this.addError('No energy');
+            this.addError('No energy to GO');
             this.lookAt = '';
             return;
         }
         if(!this.canIGo(dir)){
-            this.addError('Invalid position');
+            this.addError('Invalid position to GO');
             this.lookAt = '';
             return;
         }
@@ -184,7 +187,13 @@ export class Minion{
         this.terrainDist[this.posX][this.posY] = this;
     }
     private run(dir:string):void{
-        if(this.getEnergy() < 3 || !this.canIGo(dir)){
+        if(this.getEnergy() < 3){
+            this.addError('Not enough energy to RUN');
+            this.lookAt = '';
+            return;
+        }
+        if(!this.canIGo(dir)){
+            this.addError('Invalid position to RUN');
             this.lookAt = '';
             return;
         }
@@ -230,8 +239,20 @@ export class Minion{
                             this.stats.load = JSON.parse(JSON.stringify(this.stats.maxLoad));
                         }
                     }
+                    else{
+                        this.addError('Nothing to DIG');
+                    }
+                }
+                else{
+                    this.addError('At full capacity to DIG');
                 }
             }
+            else{
+                this.addError('There is no ResourceSource to DIG');
+            }
+        }
+        else{
+            this.addError('Invalid position to DIG');
         }
     }
     private store(dir:string):void{
@@ -248,6 +269,12 @@ export class Minion{
                 this.digDir = 'dig'+dir;
                 this.stats.load = 0;
             }
+            else{
+                this.addError('There is no ResourceStorage to STORE');
+            }
+        }
+        else{
+            this.addError('Invalid position to STORE');
         }
     }
 
