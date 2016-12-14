@@ -176,7 +176,7 @@ export class Minion{
         this.terrainDist[this.posX][this.posY] = this;
     }
     private run(dir:string):void{
-        if(this.getEnergy() == 0 || !this.canIGo(dir)){
+        if(this.getEnergy() < 3 || !this.canIGo(dir)){
             this.lookAt = '';
             return;
         }
@@ -185,11 +185,18 @@ export class Minion{
             y:this.posY,
         };
         this.lookAt = dir.length == 2?dir[0]+' '+dir[1]:dir;
-        this.stats.energy-= 1;
+        this.stats.energy -= 5;
         if(dir.indexOf('U')!=-1) this.posY -= 1;
         if(dir.indexOf('D')!=-1) this.posY += 1;
         if(dir.indexOf('R')!=-1) this.posX += 1;
         if(dir.indexOf('L')!=-1) this.posX -= 1;
+
+        if(this.canIGo(dir)){
+            if(dir.indexOf('U')!=-1) this.posY -= 1;
+            if(dir.indexOf('D')!=-1) this.posY += 1;
+            if(dir.indexOf('R')!=-1) this.posX += 1;
+            if(dir.indexOf('L')!=-1) this.posX -= 1;
+        }
 
         this.terrainDist[old.x][old.y] = null;
         this.terrainDist[this.posX][this.posY] = this;

@@ -37,6 +37,7 @@ import {CommonVariablesService} from "../services/common-variables.service";
                         <p>Formato: (action: %, arg: %)</p>
                         <p>
                             go(dir) [U D L R]<br>
+                            run(dir) [U D L R]<br>
                             rest()<br>
                             dig(dir)<br>
                             store(dir)
