@@ -89,6 +89,13 @@ sidebar {
     cursor: pointer;
     padding: 5px 0;
     font-size: 25px; }
+  .footer .footerContent {
+    display: flex;
+    align-items: center; }
+    .footer .footerContent .rightContent, .footer .footerContent .errorsContainer {
+      flex: 1; }
+    .footer .footerContent .rightContent {
+      text-align: right; }
 
 .codeEditorContainer {
   position: fixed;
@@ -147,7 +154,8 @@ sidebar {
     max-width: 950px;
     padding: 10px;
     background-color: #313335;
-    box-sizing: border-box; }
+    box-sizing: border-box;
+    text-align: right; }
 
 @keyframes digR {
   0% {

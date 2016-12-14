@@ -11,6 +11,9 @@ export class ResourcesStorage{
 
     }
     //Getters
+    getType():string{
+        return 'Storage';
+    }
     getX(): number{
         return this.posX;
     }

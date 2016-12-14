@@ -40,6 +40,9 @@ export class Minion{
     }
 
     //Getters
+    getType():string{
+        return 'minion';
+    }
     getX(): number{
         return this.posX;
     }
@@ -226,7 +229,7 @@ export class Minion{
                 ][
             this.posY+(dir=='D'?1:(dir=='U'?-1:0))
                 ];
-            if(oResource && oResource.constructor.name == 'ResourcesSource'){
+            if(oResource && oResource.getType() == 'Source'){
                 if(this.stats.load < this.stats.maxLoad){
                     let digged = oResource.dig(this.stats.strength);
                     if(digged > 0){
@@ -263,11 +266,16 @@ export class Minion{
                 ][
             this.posY+(dir=='D'?1:(dir=='U'?-1:0))
                 ];
-            if(oStorage && oStorage.constructor.name == 'ResourcesStorage'){
-                this.expPoints.harvest+=5;
-                oStorage.store(this.stats.load);
-                this.digDir = 'dig'+dir;
-                this.stats.load = 0;
+            if(oStorage && oStorage.getType() == 'Storage'){
+                if(this.stats.load > 0){
+                    this.expPoints.harvest += this.stats.load;
+                    oStorage.store(this.stats.load);
+                    this.digDir = 'dig'+dir;
+                    this.stats.load = 0;
+                }
+                else{
+                    this.addError('Nothing to STORE');
+                }
             }
             else{
                 this.addError('There is no ResourceStorage to STORE');

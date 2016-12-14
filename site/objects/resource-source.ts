@@ -13,6 +13,9 @@ export class ResourcesSource{
     constructor(private posX:number, private posY:number, private serviceEvent:Subject<any>){
     }
     //Getters
+    getType():string{
+        return 'Source';
+    }
     getX(): number{
         return this.posX;
     }
