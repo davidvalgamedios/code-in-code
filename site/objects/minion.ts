@@ -104,17 +104,23 @@ export class Minion{
 
     //CODE EXECUTION
     executeCode(){
-        console.log(this);
         this.resting = false;
         this.digDir = '';
         if(!this.inPause){
             this.lookAt = '';
             let res;
-            try {
-                let usrFun = new Function('data', 'common', this.userCode).bind(this);
-                res =  usrFun(this.customData, this.commonVarsService.getVariables());
-            }
+
+                //TEST
+                if(this.userCode){
+                    res = this.valeroTestingCode(this.customData, this.commonVarsService.getVariables());
+                }
+                //TEST
+
+                //let usrFun = new Function('data', 'common', this.userCode).bind(this);
+                //res =  usrFun(this.customData, this.commonVarsService.getVariables());
+            try {}
             catch(err){
+                this.inPause = true;
                 console.info("Errorcito");
                 console.info(err.message);
                 return;
@@ -174,10 +180,10 @@ export class Minion{
         };
         this.lookAt = dir.length == 2?dir[0]+' '+dir[1]:dir;
         this.stats.energy-= 1;
-        if(dir.indexOf('U')!=-1) this.posY -= 1;
-        if(dir.indexOf('D')!=-1) this.posY += 1;
-        if(dir.indexOf('R')!=-1) this.posX += 1;
-        if(dir.indexOf('L')!=-1) this.posX -= 1;
+        if(dir=='U') this.posY -= 1;
+        else if(dir=='D') this.posY += 1;
+        if(dir=='R') this.posX += 1;
+        else if(dir=='L') this.posX -= 1;
 
         this.terrainDist[old.x][old.y] = null;
         this.terrainDist[this.posX][this.posY] = this;
@@ -199,16 +205,16 @@ export class Minion{
         };
         this.lookAt = dir.length == 2?dir[0]+' '+dir[1]:dir;
         this.stats.energy -= 5;
-        if(dir.indexOf('U')!=-1) this.posY -= 1;
-        if(dir.indexOf('D')!=-1) this.posY += 1;
-        if(dir.indexOf('R')!=-1) this.posX += 1;
-        if(dir.indexOf('L')!=-1) this.posX -= 1;
+        if(dir=='U') this.posY -= 1;
+        else if(dir=='D') this.posY += 1;
+        if(dir=='R') this.posX += 1;
+        else if(dir=='L') this.posX -= 1;
 
         if(this.canIGo(dir)){
-            if(dir.indexOf('U')!=-1) this.posY -= 1;
-            if(dir.indexOf('D')!=-1) this.posY += 1;
-            if(dir.indexOf('R')!=-1) this.posX += 1;
-            if(dir.indexOf('L')!=-1) this.posX -= 1;
+            if(dir=='U') this.posY -= 1;
+            else if(dir=='D') this.posY += 1;
+            if(dir=='R') this.posX += 1;
+            else if(dir=='L') this.posX -= 1;
         }
 
         this.terrainDist[old.x][old.y] = null;
@@ -286,30 +292,37 @@ export class Minion{
         let surroundings = {};
 
         allDirs.forEach(dir => {
-            if(this.isValidPosition(dir)){
-                let oCell:Minion|ResourcesStorage|ResourcesSource = this.terrainDist
-                    [
-                this.posX+(dir.indexOf('R')!=-1?1:(dir.indexOf('L')!=-1?-1:0))
-                    ][
-                this.posY+(dir.indexOf('D')!=-1?1:(dir.indexOf('U')!=-1?-1:0))
-                    ];
-                if(oCell){
-                    surroundings[dir] = oCell.getType();
-                }
+            let res = this.whatsIn(dir);
+            if(dir){
+                surroundings[dir] = res;
             }
         });
 
         return surroundings;
     }
+    private whatsIn(dir):string|null{
+        if(!this.isValidPosition(dir)) return 'out';
+
+        let oCell:Minion|ResourcesStorage|ResourcesSource = this.terrainDist
+            [
+        this.posX+(dir=='R'?1:(dir=='L'?-1:0))
+            ][
+        this.posY+(dir=='D'?1:(dir=='U'?-1:0))
+            ];
+        if(oCell){
+            return oCell.getType();
+        }
+        return null;
+    }
     private canIGo(dir):boolean{
-        if(!this.isValidDirection(dir)){
+        if(!this.isValidPosition(dir)){
             return false;
         }
         let oCell = this.terrainDist
             [
-        this.posX+(dir.indexOf('R')!=-1?1:(dir.indexOf('L')!=-1?-1:0))
+        this.posX+(dir=='R'?1:(dir=='L'?-1:0))
             ][
-        this.posY+(dir.indexOf('D')!=-1?1:(dir.indexOf('U')!=-1?-1:0))
+        this.posY+(dir=='D'?1:(dir=='U'?-1:0))
             ];
         return !oCell;
     }
@@ -318,25 +331,13 @@ export class Minion{
             return false;
         }
         if(dir == 'U' && this.posY == 0) return false;
-        if(dir == 'D' && this.posY == this.terrainHeight-1) return false;
+        else if(dir == 'D' && this.posY == this.terrainHeight-1) return false;
         if(dir == 'L' && this.posX == 0) return false;
-        if(dir == 'R' && this.posX == this.terrainWidth-1) return false;
+        else if(dir == 'R' && this.posX == this.terrainWidth-1) return false;
 
         return true;
     }
-    private isValidDirection(dir):boolean{
-        if((dir.length != 1 && dir.length != 2) ||
-            dir.indexOf('U') != -1 && dir.indexOf('D') != -1 ||
-            dir.indexOf('L') != -1 && dir.indexOf('R') != -1){
-            return false;
-        }
-        if(dir.indexOf('U') != -1 && this.posY == 0) return false;
-        if(dir.indexOf('D') != -1 && this.posY == this.terrainHeight-1) return false;
-        if(dir.indexOf('L') != -1 && this.posX == 0) return false;
-        if(dir.indexOf('R') != -1 && this.posX == this.terrainWidth-1) return false;
 
-        return true;
-    }
     private addError(msg):void{
         let oNow = new Date();
         if(this.lastErrors.length >2){
@@ -380,58 +381,194 @@ export class Minion{
         }
     }
 
-    private cosas(data, common){
+    private valeroTestingCode(data, common){
+        console.log("START VALERO CODE");
 
         //RESTING
-        if(data.isResting){
-            if(this.getEnergy() >= 100){
-                data.isResting = false;
-            }
-            else{
-                return{
-                    action: 'rest'
-                }
-            }
+        let restAction = checkResting(this);
+        if(restAction){
+            return restAction;
         }
-        if(this.getEnergy() == 0){
-            data.isResting = true;
-            return{
-                action: 'rest'
-            }
-        }
-        //RESTING
 
 
         if(this.loadIsFull()){//MUST STORE
-
+            let dir = getNearStorage(this);
+            if(dir) {
+                return {action:'store',arg:dir}
+            }
+            dir = goToCoords(this, 2, 15);
+            return {action:'go', arg:dir};
         }
         else{//MUST DIG
-            let dir = getNearSource();
+            let dir = getNearSource(this);
             if(dir){
                 return {action:'dig',arg:dir}
             }
-            else if(common.sourceX && common.sourceY){//Check if anybody knows where is source
-
+            if(common.sourceX && common.sourceY){//Check if anybody knows where is source
+                dir = goToCoords(this, common.sourceX, common.sourceY);
+                return {action:'go', arg:dir};
             }
-            else if(data.imInPosition){//Check if Im already looking for source
-
+            else if(data.searchDirX && data.searchDirY){//Check if Im already looking for source
+                dir = resumeSearching(this);
+                return {action:'go', arg:dir};
             }
             else{//Go to position
-
+                dir = goToSearchStart(this);
+                return {action:'go', arg:dir};
             }
         }
 
-        return null;
 
-        function getNearSource(){
-            let nearObjects = this.getSurroundings();
+        function goToSearchStart(scope){
+            let myX = scope.getX();
+            let myY = scope.getY();
+            if(myX == 0 && myY == 0){
+                data.searchDirX = 1;
+                data.searchDirY = 1;
+                return '';
+            }
+            else{
+                return goToCoords(scope, data.initialSearch.x, data.initialSearch.y);
+            }
+        }
+
+        function goToCoords(scope, x, y){
+            let myX = scope.getX();
+            let myY = scope.getY();
+            let vDir;
+            let hDir;
+
+            //First calculate intention
+            if(myY > y) vDir = 'U';
+            else if(myY < y) vDir = 'D';
+            if(myX > x) hDir = 'L';
+            else if(myX < x) hDir = 'R';
+
+            if(data.verticalFirst && vDir && scope.whatsIn(vDir) == null){
+                return vDir;
+            }
+            else if(hDir && scope.whatsIn(hDir) == null){
+                 return hDir;
+            }
+            else if(vDir && scope.whatsIn(vDir) == null){
+                return vDir;
+            }
+            //I can't go where I want to go
+            let reverseV;
+            let reverseH;
+
+            if(vDir){
+                reverseV = vDir=='U'?'D':'U';
+            }
+            if(hDir){
+                reverseH = hDir=='R'?'L':'R';
+            }
+
+            //Check other alternatives
+            if(data.verticalFirst && scope.whatsIn(reverseV) == null) return reverseV;
+            else if(scope.whatsIn(reverseH) == null) return reverseH;
+            else if(scope.whatsIn(reverseV) == null) return reverseV;
+
+            //I can't move
+            return '';
+        }
+
+        function resumeSearching(scope){//searchDirX exists
+            let dir;
+
+            if(data.verticalFirst){
+                dir = tryVerticalSearch(scope);
+                if(dir) return dir;
+                dir = tryHorizontalSearch(scope);
+                if(dir) return dir;
+                return '';
+            }
+            else{
+                dir = tryHorizontalSearch(scope);
+                if(dir) return dir;
+                dir = tryVerticalSearch(scope);
+                if(dir) return dir;
+                return '';
+            }
+        }
+
+        function tryVerticalSearch(scope){
+            let dir = data.searchY == 1?'D':'U';
+            let path = scope.whatsIn(dir);
+            if(path == null){
+                return dir;
+            }
+            if(path == 'out'){
+                data.searchY = data.searchY == 1?0:1;
+            }
+            return null;
+        }
+
+        function tryHorizontalSearch(scope){
+            let dir = data.searchX == 1?'R':'L';
+            let path = scope.whatsIn(dir);
+            if(path == null){
+                return dir;
+            }
+            if(path == 'out'){
+                data.searchX = data.searchX == 1?0:1;
+            }
+            return null;
+        }
+
+        function getNearStorage(scope){
+            let nearObjects = scope.getSurroundings();
             let dest = null;
             Object.keys(nearObjects).forEach(dir => {
-                if(nearObjects[dir] == 'Source'){
+                if(nearObjects[dir] == 'Storage'){
                     dest = dir;
                 }
             });
             return dest;
+        }
+
+        function getNearSource(scope){
+            let nearObjects = scope.getSurroundings();
+            let dest = null;
+            Object.keys(nearObjects).forEach(dir => {
+                if(nearObjects[dir] == 'Source'){
+                    let myX = scope.getX();
+                    let myY = scope.getY();
+                    if(dir == 'U') myY--;
+                    else if(dir == 'D') myY++;
+                    else if(dir == 'L') myX--;
+                    else if(dir == 'R') myX++;
+                    //Update common source X
+                    common.sourceX = myX;
+                    common.sourceY = myY;
+                    //Delete search
+                    data.searchDirX = null;
+                    data.searchDirY = null;
+                    dest = dir;
+                }
+            });
+            return dest;
+        }
+
+        function checkResting(scope){
+            if(data.isResting){
+                if(scope.getEnergy() >= 100){
+                    data.isResting = false;
+                    return null;
+                }
+                else{
+                    return{
+                        action: 'rest'
+                    }
+                }
+            }
+            if(scope.getEnergy() == 0){
+                data.isResting = true;
+                return{
+                    action: 'rest'
+                }
+            }
+            return null;
         }
     }
 }

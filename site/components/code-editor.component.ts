@@ -33,7 +33,8 @@ import {CommonVariablesService} from "../services/common-variables.service";
                             this.getHealth()<br>
                             this.getLoad()<br>
                             this.loadIsFull()<br>
-                            this.getSurroundings() -> OBJ(dir:"Minion|Source|Resource")
+                            this.whatsIn(dir) -> "Minion|Source|Storage|out"|null<br>
+                            this.getSurroundings() -> OBJ(dir:"Minion|Source|Storage|out"|null)
                         </p>
                         <h3>Acciones</h3>
                         <p>Formato: (action: %, arg: %)</p>

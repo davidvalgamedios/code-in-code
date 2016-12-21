@@ -92,6 +92,8 @@ export class TerrainService{
             aResourcesData.push(oRsc.getStateData())
         });
         localStorage.setItem('cic-resource', JSON.stringify(aResourcesData));
+
+        this.commonVarsService.saveVariablesState();
     }
 
     //INITS AND GENERATORS
